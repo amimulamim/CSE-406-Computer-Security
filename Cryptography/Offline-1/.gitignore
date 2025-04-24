@@ -1,0 +1,8 @@
+.venv
+.vscode
+*.out
+*.exe
+*.o
+*.obj
+*.dll
+*.so
