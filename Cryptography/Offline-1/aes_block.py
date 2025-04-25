@@ -9,7 +9,7 @@ class AESBlock:
         # AES state is 4x4 matrix: state[column][row]
         #here [col][row] is used to access a byte instead of [row][col] because
         #the words are stored in column-major order
-        self.state = [list(input_block[i:i + 4]) for i in range(0, 16, 4)]
+        self.state = [[input_block[row + 4 * col] for row in range(4)] for col in range(4)]
 
     def add_round_key(self, round_key: List[List[int]]):
         """XOR each byte of the state with the round key"""
@@ -75,7 +75,7 @@ class AESBlock:
 
     def get_state_bytes(self) -> bytes:
         """Flatten state into a 16-byte block (row-major order)"""
-        return bytes(self.state[col][row] for row in range(4) for col in range(4))
+        return bytes(self.state[col][row] for col in range(4) for row in range(4))
 
     @staticmethod
     def flatten_round_key(key_words: List[List[int]], round_index: int) -> List[List[int]]:
