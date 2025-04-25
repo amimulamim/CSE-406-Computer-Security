@@ -36,11 +36,21 @@ def expand_key(key: bytes) -> List[List[int]]:
 
     num_key_words = key_len // 4                      # Number of 32-bit words in the key
     num_rounds = {4: 10, 6: 12, 8: 14}[num_key_words]         # Rounds
-    nb = 4                                 # Always 4 for AES
+    nb = 4                                 # Always 4 for AES,number of bytes in a word
 
     key_words = [list(key[i:i+4]) for i in range(0, len(key), 4)]
     rcon = generate_rcon(num_rounds + 1)
-    
+
+
+    # if i< num_key_words,it does not go into the loop
+    #so Ki is directly assigned to the key_words,unchanged
+
+
+    #when i>num_key_words, it goes into the loop
+    #i is the index of the key_words
+    #first round,it gives w4,w5,w6,w7(the loop gives only one but runs for 4,5,6,7)
+    #second round it gives w8,w9,w10,w11
+    #at after 10th round, it gives w40,w41,w42,w43
     for i in range(num_key_words, nb * (num_rounds + 1)):
         temp = key_words[i - 1].copy()
         
@@ -56,9 +66,8 @@ def expand_key(key: bytes) -> List[List[int]]:
 
     return key_words
 
-# 🔧 Test code: Run only when this file is executed directly
 
-# 🔧 Test if this works
+#  Test 
 if __name__ == "__main__":
     sample_key = b'Thats my Kung Fu'  # AES-128 key
     expanded = expand_key(sample_key)
