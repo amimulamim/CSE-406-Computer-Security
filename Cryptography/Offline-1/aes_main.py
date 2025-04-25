@@ -35,6 +35,7 @@ def main():
     print_hex_ascii( decrypted)
 
     print("Execution Time Details:")
+    print(f"Key Schedule Time: {aes.key_schedule_time:.6f} ms")
     print(f"Encryption Time: {1000 * (end_enc - start_enc):.6f} ms")
     print(f"Decryption Time: {1000 * (end_dec - start_dec):.6f} ms")
 

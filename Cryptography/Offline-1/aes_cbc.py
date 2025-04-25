@@ -5,6 +5,7 @@ from key_schedule import expand_key
 from padding import pad_pkcs7, unpad_pkcs7
 
 import hashlib
+import time
 
 
 
@@ -19,7 +20,10 @@ class AESCBC:
         assert block_size == 16, "AES only supports 16-byte blocks (128 bits)"
         self.key = key
         self.block_size = block_size
+
+        start_time= time.time()
         self.round_keys = expand_key(key)
+        self.key_schedule_time = (time.time() - start_time)*1000 #in ms
 
     def _encrypt_block(self, block: bytes, prev: bytes) -> bytes:
         xored = xor_bytes(block, prev)
