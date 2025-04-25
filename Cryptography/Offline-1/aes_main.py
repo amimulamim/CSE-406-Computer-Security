@@ -1,10 +1,7 @@
 from aes_cbc import AESCBC
 from padding import pad_pkcs7
 import time
-
-def print_hex_ascii( data):
-    print(f"\nIn HEX: {' '.join(f'{b:02X}' for b in data)}")
-    print(f"In ASCII: {data.decode(errors='replace')}\n")
+from logger import print_hex_ascii
 
 
 def main():
@@ -35,7 +32,6 @@ def main():
 
 
     print("Deciphered Text:")
-    print("after unpadding:")
     print_hex_ascii( decrypted)
 
     print("Execution Time Details:")
