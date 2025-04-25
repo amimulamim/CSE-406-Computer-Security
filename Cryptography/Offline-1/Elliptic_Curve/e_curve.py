@@ -64,7 +64,6 @@ class EllipticCurve:
         while True:
             x = randint(0, self.p - 1)
             rhs = (x ** 3 + self.a * x + self.b) % self.p
-
             if strategy == 'euler':
                 if self.p % 4 != 3:
                     continue  # not safe to use Euler method

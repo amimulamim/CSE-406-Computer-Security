@@ -50,3 +50,5 @@ class PrimeUtils:
             discriminant = (4 * pow(a, 3, p) + 27 * pow(b, 2, p)) % p
             if discriminant != 0:
                 return a, b
+    
+        
