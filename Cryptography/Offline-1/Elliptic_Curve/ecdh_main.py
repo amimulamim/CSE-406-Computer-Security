@@ -29,6 +29,7 @@ class ECDHBenchmarkRunner:
         print(f"Private Key B: {b_priv}, Public Key B: ({b_pub.x}, {b_pub.y})")
         print(f"Shared Secret A: ({shared_A.x}, {shared_A.y})")
         print(f"Shared Secret B: ({shared_B.x}, {shared_B.y})")
+        
 
         assert shared_A.x == shared_B.x and shared_A.y == shared_B.y, "Shared secrets do not match"
 
