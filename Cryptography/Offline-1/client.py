@@ -1,44 +1,61 @@
-#simulating Alice
-
-
+# client.py
+import time
 from socket_wrapper import SecureSocketWrapper
+from prime_utils import PrimeUtils
 from e_curve import EllipticCurve
 from ec_point import ECPoint
-from prime_utils import PrimeUtils
 
 def main():
-    print("\n[CLIENT] Initializing elliptic curve and generator...")
-    p = PrimeUtils.generate_prime(128)
+    print("[CLIENT] Starting...")
+    client = SecureSocketWrapper(role='client', host='127.0.0.1', port=9999)
+
+    client.start_connection()
+
+    # Step 1: Generate and send curve and generator
+    print("[CLIENT] Generating curve and point...")
+    p = PrimeUtils.generate_prime(128)  # or 192/256 for more security
     a, b = PrimeUtils.random_curve_coefficients(p)
     curve = EllipticCurve(a, b, p)
-    gx, gy = curve.find_point_on_curve(strategy="tonelli")
-    G = ECPoint(curve, gx, gy)
+    Gx, Gy = curve.find_point_on_curve(strategy='tonelli')  # or 'euler'
+    G = ECPoint(curve, Gx, Gy)
+    print(f"[CLIENT] Curve: y² = x³ + {a}x + {b} mod {p}")
+    print(f"[CLIENT] Generator Point G: ({Gx}, {Gy})")
 
-    print(f"[CLIENT] Curve: y^2 = x^3 + {a}x + {b} (mod {p})")
-    print(f"[CLIENT] Generator G: ({gx}, {gy})")
-
-    client = SecureSocketWrapper(role='client', port=9999)
-
-    # Step 1: Connect and send curve + G
-    client.start_connection()
     client.exchange_curve_and_generator(curve, G)
-    print("[CLIENT] Sent curve and generator.")
 
-    # Step 2: ECDH Key Exchange
+    # Step 2: ECDH shared key
+    print("[CLIENT] Establishing shared key...")
     client.establish_shared_key()
     print("[CLIENT] Shared AES key established.")
 
-    # Step 3: Send encrypted message
-    msg = b"Hello from Alice (Client)"
-    client.send_encrypted_text(msg)
-    print(f"[CLIENT] Sent (encrypted): {msg.decode()}")
+    # Step 3: Start receiver thread
+    client.start_receiver()
 
-    # Step 4: Receive encrypted reply
-    response = client.receive_encrypted_text()
-    print(f"[CLIENT] Received (decrypted): {response.decode()}")
+    # Step 4: Sending loop
+    try:
+        while True:
+            msg = input("[CLIENT] Enter message (or 'send <filename>' or 'close'): ").strip()
+            if not msg:
+                continue
 
-    client.close()
-    print("[CLIENT] Connection closed.")
+            if msg.lower() == 'close':
+                print("[CLIENT] Closing connection...")
+                break
+
+            if msg.lower().startswith('send '):
+                filename = msg[5:].strip()
+                if filename:
+                    client.send_encrypted_file_command(filename)
+                else:
+                    print("[CLIENT] Please specify a filename after 'send'.")
+            else:
+                client.send_encrypted_text(msg.encode())
+
+    except KeyboardInterrupt:
+        print("\n[CLIENT] Interrupted by user.")
+
+    finally:
+        client.close()
 
 if __name__ == "__main__":
     main()

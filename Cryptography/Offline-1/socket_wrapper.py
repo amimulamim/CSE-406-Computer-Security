@@ -1,11 +1,12 @@
 import socket
 import pickle
+import threading
+import os
 from typing import Union
 from aes_cbc import AESCBC
 from ecdh_key_exchange import ECDHKeyExchange
 from e_curve import EllipticCurve
 from ec_point import ECPoint
-
 
 class SecureSocketWrapper:
     def __init__(self, role: str, host: str = '127.0.0.1', port: int = 9999):
@@ -19,6 +20,11 @@ class SecureSocketWrapper:
         self.curve: Union[EllipticCurve, None] = None
         self.G: Union[ECPoint, None] = None
         self.ecdh: Union[ECDHKeyExchange, None] = None
+        self.running = True  # For controlling background receiver thread
+        self.receiver_thread = None
+        self.folder = "server_files" if self.role == 'server' else "client_files"
+        if not os.path.exists(self.folder):
+            os.makedirs(self.folder)
 
     def start_connection(self):
         if self.role == 'server':
@@ -32,10 +38,16 @@ class SecureSocketWrapper:
             self.conn = self.sock
             print(f"[CLIENT] Connected to {self.host}:{self.port}")
 
+    def start_receiver(self):
+        self.receiver_thread = threading.Thread(target=self.receive_loop, daemon=True)
+        self.receiver_thread.start()
+
     def close(self):
+        self.running = False
         if self.conn:
             self.conn.close()
         self.sock.close()
+        print(f"[{self.role.upper()}] Connection closed.")
 
     # ------------- Data Transfer ----------------
     def send_data(self, data):
@@ -79,20 +91,70 @@ class SecureSocketWrapper:
         self.shared_key = shared.x.to_bytes(16, 'big')[:16]
         self.aes = AESCBC(self.shared_key)
 
-    # ------------- Encrypted Text/File Transfer ----------------
+    # ------------- Sending Text/File (Encrypted) ----------------
     def send_encrypted_text(self, plaintext: bytes):
         ciphertext = self.aes.encrypt_text(plaintext)
-        self.send_data(ciphertext)
+        self.send_data({"type": "text", "data": ciphertext})
 
-    def receive_encrypted_text(self) -> bytes:
-        return self.aes.decrypt_text(self.receive_data())
 
-    def send_encrypted_file(self, file_path: str):
-        with open(file_path, 'rb') as f:
-            raw = f.read()
-        self.send_data(self.aes.encrypt_text(raw))
+    
+    def send_encrypted_file(self, filename: str):
+        path = os.path.join(self.folder, filename)
+        if not os.path.isfile(path):
+            print(f"[{self.role.upper()}] File '{filename}' not found in {self.folder}/")
+            return
+        with open(path, 'rb') as f:
+            file_data = f.read()
+        payload = {"type": "file", "filename": filename, "data": self.aes.encrypt_text(file_data)}
+        self.send_data(payload)
+        print(f"[{self.role.upper()}] File '{filename}' sent successfully.")
 
-    def receive_encrypted_file(self, save_path: str):
-        decrypted = self.aes.decrypt_text(self.receive_data())
-        with open(save_path, 'wb') as f:
-            f.write(decrypted)
+    def receive_text(self, ciphertext: bytes):
+        plaintext = self.aes.decrypt_text(ciphertext)
+        print(f"\n[{self.role.upper()} RECEIVED TEXT]: {plaintext.decode()}")
+
+    def receive_file(self, filename: str, ciphertext: bytes):
+        raw = self.aes.decrypt_text(ciphertext)
+        save_path = os.path.join(self.folder, filename)
+        if  os.path.exists(save_path):
+            print(f"[{self.role.upper()}] File '{filename}' already exists. Overwriting.")
+        else:
+            print(f"[{self.role.upper()}] File '{filename}' received.")
+            with open(save_path, 'wb') as f:
+                f.write(raw)
+            print(f"\n[{self.role.upper()} RECEIVED FILE]: Saved as {save_path}")    
+
+
+    # ------------- Background Receiver Loop ----------------
+    def receive_loop(self):
+        while self.running:
+            try:
+                incoming = self.receive_data()
+                if not incoming:
+                    continue
+
+                if isinstance(incoming, dict):
+                    data_type = incoming.get("type")
+
+                    if data_type == "text":
+                        self.receive_text(incoming["data"])
+
+                    elif data_type == "file":
+                        filename = incoming.get("filename")
+                        ciphertext = incoming.get("data")
+                        self.receive_file(filename, ciphertext)
+
+                    else:
+                        print(f"[{self.role.upper()} WARNING]: Unknown data type received.")
+
+                else:
+                    print(f"[{self.role.upper()} WARNING]: Received unexpected data format.")
+
+            except (ConnectionError, OSError):
+                print(f"[{self.role.upper()} WARNING]: Connection closed.")
+                self.running = False
+                break
+            except Exception as e:
+                print(f"[{self.role.upper()} ERROR]: {e}")
+                self.running = False
+                break
