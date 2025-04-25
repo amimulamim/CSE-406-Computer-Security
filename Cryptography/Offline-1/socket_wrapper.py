@@ -9,7 +9,8 @@ from e_curve import EllipticCurve
 from ec_point import ECPoint
 
 class SecureSocketWrapper:
-    def __init__(self, role: str, host: str = '127.0.0.1', port: int = 9999):
+    def __init__(self, role: str, host: str = '127.0.0.1', port: int = 9999 , aes_bit: int = 128):
+        
         self.role = role.lower()  # 'client' or 'server'
         self.host = host
         self.port = port
@@ -22,6 +23,7 @@ class SecureSocketWrapper:
         self.ecdh: Union[ECDHKeyExchange, None] = None
         self.running = True  # For controlling background receiver thread
         self.receiver_thread = None
+        self.aes_bit = aes_bit  # AES key size in bits (128, 192, or 256)
         self.folder = "server_files" if self.role == 'server' else "client_files"
         if not os.path.exists(self.folder):
             os.makedirs(self.folder)
@@ -88,8 +90,13 @@ class SecureSocketWrapper:
         peer_x, peer_y = self.receive_data()
         peer_pub = ECPoint(self.curve, peer_x, peer_y)
         shared = self.ecdh.compute_shared_secret(priv, peer_pub)
-        self.shared_key = shared.x.to_bytes(16, 'big')[:16]
+        key_len = int(int(self.aes_bit) // 8)
+        self.shared_key = shared.x.to_bytes(32, 'big')[:key_len]
+
         self.aes = AESCBC(self.shared_key)
+
+  
+
 
     # ------------- Sending Text/File (Encrypted) ----------------
     def send_encrypted_text(self, plaintext: bytes):

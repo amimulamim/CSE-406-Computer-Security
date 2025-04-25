@@ -4,9 +4,10 @@ from socket_wrapper import SecureSocketWrapper
 from prime_utils import PrimeUtils
 from e_curve import EllipticCurve
 from ec_point import ECPoint
+from config import aes_key_len
 
 def main():
-    server = SecureSocketWrapper(role='server', host='127.0.0.1', port=9999)
+    server = SecureSocketWrapper(role='server', host='127.0.0.1', port=9999,aes_bit=aes_key_len)
 
     server.start_connection()
 
