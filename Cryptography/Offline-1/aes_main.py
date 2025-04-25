@@ -2,8 +2,8 @@ from aes_cbc import AESCBC
 from padding import pad_pkcs7
 import time
 
-def print_hex_ascii(label, data):
-    print(f"{label}:\nIn HEX: {' '.join(f'{b:02X}' for b in data)}")
+def print_hex_ascii( data):
+    print(f"\nIn HEX: {' '.join(f'{b:02X}' for b in data)}")
     print(f"In ASCII: {data.decode(errors='replace')}\n")
 
 
@@ -14,21 +14,20 @@ def main():
     aes = AESCBC(key)
 
     print("Key:")
-    print_hex_ascii("In ASCII", key)
-    print_hex_ascii("In HEX", key)
+    print_hex_ascii(key)
 
     print("Plain Text:")
-    print_hex_ascii("In HEX", plaintext)
+    print_hex_ascii( plaintext)
+    print("plain text after padding:")
     padded = pad_pkcs7(plaintext, aes.block_size)
-    print_hex_ascii("In ASCII (After Padding)", padded)
+    print_hex_ascii( padded)
 
     start_enc = time.time()
     ciphertext = aes.encrypt_text(plaintext)
     end_enc = time.time()
 
     print("Ciphered Text:")
-    print_hex_ascii("In HEX", ciphertext)
-    print_hex_ascii("In ASCII", ciphertext)
+    print_hex_ascii(ciphertext)
 
     start_dec = time.time()
     decrypted = aes.decrypt_text(ciphertext)
@@ -36,8 +35,8 @@ def main():
 
 
     print("Deciphered Text:")
-
-    print_hex_ascii("After Unpadding", decrypted)
+    print("after unpadding:")
+    print_hex_ascii( decrypted)
 
     print("Execution Time Details:")
     print(f"Encryption Time: {1000 * (end_enc - start_enc):.6f} ms")

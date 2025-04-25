@@ -51,6 +51,7 @@ class AESCBC:
     def decrypt_text(self, ciphertext: bytes) -> bytes:
         if len(ciphertext) < self.block_size:
             raise ValueError("Ciphertext too short to contain IV")
+        
         iv = ciphertext[:self.block_size]
         ciphertext = ciphertext[self.block_size:]
         decrypted = b''
@@ -88,16 +89,6 @@ class AESCBC:
         print(f" Decrypted: {input_path} → {output_path}")
 
 
-        assert len(iv) == self.block_size
-        padded = pad_pkcs7(plaintext, self.block_size)
-        ciphertext = b''
-        prev = iv
-        for i in range(0, len(padded), self.block_size):
-            block = padded[i:i + self.block_size]
-            encrypted = self._encrypt_block(block, prev)
-            ciphertext += encrypted
-            prev = encrypted
-        return iv + ciphertext
     def decrypt_bytes(self, encrypted_bytes: bytes) -> bytes:
         return self.decrypt_text(encrypted_bytes)
 
