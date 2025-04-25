@@ -99,13 +99,19 @@ class SecureSocketWrapper:
 
     
     def send_encrypted_file(self, filename: str):
+        print(f"[{self.role.upper()}] Sending file '{filename}'...")
         path = os.path.join(self.folder, filename)
         if not os.path.isfile(path):
             print(f"[{self.role.upper()}] File '{filename}' not found in {self.folder}/")
             return
+        print(f"[{self.role.upper()}] File '{filename}' found. Reading...")
         with open(path, 'rb') as f:
             file_data = f.read()
+        print(f"[{self.role.upper()}] File '{filename}' read successfully. Encrypting...")
+        print(f"[{self.role.upper()}] File size: {len(file_data)} bytes")
+        print("data: ", file_data[:10], "...")
         payload = {"type": "file", "filename": filename, "data": self.aes.encrypt_text(file_data)}
+        print(f"[{self.role.upper()}] File '{filename}' encrypted successfully. Sending...")    
         self.send_data(payload)
         print(f"[{self.role.upper()}] File '{filename}' sent successfully.")
 
@@ -115,6 +121,7 @@ class SecureSocketWrapper:
 
     def receive_file(self, filename: str, ciphertext: bytes):
         raw = self.aes.decrypt_text(ciphertext)
+        
         save_path = os.path.join(self.folder, filename)
         if  os.path.exists(save_path):
             print(f"[{self.role.upper()}] File '{filename}' already exists. Overwriting.")

@@ -45,7 +45,7 @@ def main():
             if msg.lower().startswith('send '):
                 filename = msg[5:].strip()
                 if filename:
-                    client.send_encrypted_file_command(filename)
+                    client.send_encrypted_file(filename)
                 else:
                     print("[CLIENT] Please specify a filename after 'send'.")
             else:
