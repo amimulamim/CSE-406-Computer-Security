@@ -21,6 +21,8 @@ class AESCBC:
         self.key = key
         self.block_size = block_size
 
+        print("AES key length: ", len(key))
+
         start_time= time.time()
         self.round_keys = expand_key(key)
         self.key_schedule_time = (time.time() - start_time)*1000 #in ms

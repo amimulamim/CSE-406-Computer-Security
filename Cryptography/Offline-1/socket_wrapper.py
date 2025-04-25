@@ -23,6 +23,9 @@ class SecureSocketWrapper:
         self.running = True  # For controlling background receiver thread
         self.receiver_thread = None
         self.aes_byte_length = aes_byte_length
+        if self.aes_byte_length not in (16, 24, 32):
+         raise ValueError("AES key must be 128, 192, or 256 bits (16, 24, or 32 bytes).")
+
         self.folder = "server_files" if self.role == 'server' else "client_files"
         if not os.path.exists(self.folder):
             os.makedirs(self.folder)

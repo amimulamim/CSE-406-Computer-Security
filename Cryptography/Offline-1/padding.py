@@ -13,7 +13,7 @@ def unpad_pkcs7(data: bytes) -> bytes:
 	if not data:
 		return data
 	pad_length = data[-1]
-
+	print(f"pad_length: {pad_length}")
 	if pad_length < 1 or pad_length > 16:
 		raise ValueError("Invalid padding length")
 	if data[-pad_length:] != bytes([pad_length] * pad_length):

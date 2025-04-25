@@ -5,7 +5,7 @@ from prime_utils import PrimeUtils
 from e_curve import EllipticCurve
 from ec_point import ECPoint
 
-aes_bit_length = 128  # AES block size in bytes
+aes_bit_length = 256  # AES block size in bytes
 # AES-128, AES-192, or AES-256
 
 
