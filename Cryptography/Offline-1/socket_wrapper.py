@@ -9,7 +9,7 @@ from e_curve import EllipticCurve
 from ec_point import ECPoint
 
 class SecureSocketWrapper:
-    def __init__(self, role: str, host: str = '127.0.0.1', port: int = 9999):
+    def __init__(self, role: str, host: str = '127.0.0.1', port: int = 9999,aes_byte_length: int = 16):
         self.role = role.lower()  # 'client' or 'server'
         self.host = host
         self.port = port
@@ -22,6 +22,7 @@ class SecureSocketWrapper:
         self.ecdh: Union[ECDHKeyExchange, None] = None
         self.running = True  # For controlling background receiver thread
         self.receiver_thread = None
+        self.aes_byte_length = aes_byte_length
         self.folder = "server_files" if self.role == 'server' else "client_files"
         if not os.path.exists(self.folder):
             os.makedirs(self.folder)
@@ -88,7 +89,7 @@ class SecureSocketWrapper:
         peer_x, peer_y = self.receive_data()
         peer_pub = ECPoint(self.curve, peer_x, peer_y)
         shared = self.ecdh.compute_shared_secret(priv, peer_pub)
-        self.shared_key = shared.x.to_bytes(16, 'big')[:16]
+        self.shared_key = shared.x.to_bytes(32, 'big')[:self.aes_byte_length]
         self.aes = AESCBC(self.shared_key)
 
     # ------------- Sending Text/File (Encrypted) ----------------
@@ -121,7 +122,7 @@ class SecureSocketWrapper:
 
     def receive_file(self, filename: str, ciphertext: bytes):
         raw = self.aes.decrypt_text(ciphertext)
-        
+
         save_path = os.path.join(self.folder, filename)
         if  os.path.exists(save_path):
             print(f"[{self.role.upper()}] File '{filename}' already exists. Overwriting.")

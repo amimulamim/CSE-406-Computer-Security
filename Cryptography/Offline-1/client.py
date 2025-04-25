@@ -5,15 +5,20 @@ from prime_utils import PrimeUtils
 from e_curve import EllipticCurve
 from ec_point import ECPoint
 
+aes_bit_length = 128  # AES block size in bytes
+# AES-128, AES-192, or AES-256
+
+
+
 def main():
     print("[CLIENT] Starting...")
-    client = SecureSocketWrapper(role='client', host='127.0.0.1', port=9999)
+    client = SecureSocketWrapper(role='client', host='127.0.0.1', port=9999, aes_byte_length=aes_bit_length//8)
 
     client.start_connection()
 
     # Step 1: Generate and send curve and generator
     print("[CLIENT] Generating curve and point...")
-    p = PrimeUtils.generate_prime(128)  # or 192/256 for more security
+    p = PrimeUtils.generate_prime(aes_bit_length)  #128 or 192/256 for more security
     a, b = PrimeUtils.random_curve_coefficients(p)
     curve = EllipticCurve(a, b, p)
     Gx, Gy = curve.find_point_on_curve(strategy='tonelli')  # or 'euler'
