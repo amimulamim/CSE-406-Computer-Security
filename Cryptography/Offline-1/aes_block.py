@@ -101,3 +101,21 @@ class AESBlock:
         self.sub_bytes()
         self.shift_rows()
         self.add_round_key(self.flatten_round_key(round_keys, num_rounds))
+
+    def decrypt(self, round_keys: List[List[int]]):
+        num_rounds = (len(round_keys) // 4) - 1
+
+        # Initial round
+        self.add_round_key(self.flatten_round_key(round_keys, num_rounds))
+
+        # Main rounds
+        for r in range(num_rounds - 1, 0, -1):
+            self.inverse_shift_rows()
+            self.inverse_sub_bytes()
+            self.add_round_key(self.flatten_round_key(round_keys, r))
+            self.inverse_mix_columns()
+
+        # Final round (no MixColumns)
+        self.inverse_shift_rows()
+        self.inverse_sub_bytes()
+        self.add_round_key(self.flatten_round_key(round_keys, 0))
