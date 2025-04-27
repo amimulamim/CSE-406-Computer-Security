@@ -1,6 +1,5 @@
 
 from aes_block import AESBlock
-from key_schedule import expand_key
 from padding import pad_pkcs7, unpad_pkcs7
 
 
