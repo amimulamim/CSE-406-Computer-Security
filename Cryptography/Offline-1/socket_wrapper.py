@@ -7,9 +7,11 @@ from aes_cbc import AESCBC
 from ecdh_key_exchange import ECDHKeyExchange
 from e_curve import EllipticCurve
 from ec_point import ECPoint
+from aes_strategy import AESStrategy
 
 class SecureSocketWrapper:
-    def __init__(self, role: str, host: str = '127.0.0.1', port: int = 9999 , aes_bit: int = 128):
+    def __init__(self, role: str, host: str = '127.0.0.1', port: int = 9999 , aes_bit: int = 128,encryption_strategy=None):
+        
         
         self.role = role.lower()  # 'client' or 'server'
         self.host = host
@@ -17,6 +19,7 @@ class SecureSocketWrapper:
         self.conn = None
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.shared_key = None
+        self.encryption_strategy_class = encryption_strategy # class, not object YET
         self.aes: Union[AESCBC, None] = None
         self.curve: Union[EllipticCurve, None] = None
         self.G: Union[ECPoint, None] = None
@@ -93,8 +96,13 @@ class SecureSocketWrapper:
         key_len = int(int(self.aes_bit) // 8)
         self.shared_key = shared.x.to_bytes(32, 'big')[:key_len]
 
-        self.aes = AESCBC(self.shared_key)
 
+
+
+        if not self.encryption_strategy_class:
+            raise ValueError("Encryption strategy class not provided.")
+
+        self.aes = self.encryption_strategy_class(self.shared_key)  # created AESStrategy object dynamically!
   
 
 
