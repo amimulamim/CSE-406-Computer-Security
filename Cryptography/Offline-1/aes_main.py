@@ -1,23 +1,21 @@
-from aes_cbc import AESCBC
-from padding import pad_pkcs7
+
 import time
 from logger import print_hex_ascii
+from config import aes_encryption_strategy
 
 
 def main():
-    key = b"BUET CSE2020 Batch sgddeghdehdehjdeqhjkedhbjdehbjdehj  "  # 16 bytes = AES-128
+    key = b"BUET CSE2020 Batch"  # 16 bytes = AES-128
     plaintext = b"We need picnic"
 
-    aes = AESCBC(key)
+    aes = aes_encryption_strategy(key)
 
     print("Key:")
     print_hex_ascii(key)
 
     print("Plain Text:")
     print_hex_ascii( plaintext)
-    print("plain text after padding:")
-    padded = pad_pkcs7(plaintext, aes.block_size)
-    print_hex_ascii( padded)
+
 
     start_enc = time.time()
     ciphertext = aes.encrypt_text(plaintext)

@@ -7,6 +7,9 @@ def pad_pkcs7(data: bytes, block_size: int = 16) -> bytes:
 	pad_length = block_size - (len(data) % block_size)
 	padding = bytes([pad_length] * pad_length)
 
+	print_hex_ascii(data + padding, "after padding")
+
+
 	return data + padding
 
 def unpad_pkcs7(data: bytes) -> bytes:

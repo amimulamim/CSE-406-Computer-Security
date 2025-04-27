@@ -1,1 +1,1 @@
-aes_key_len = 192
+aes_key_len = 256
