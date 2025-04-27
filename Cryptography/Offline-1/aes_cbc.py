@@ -3,7 +3,7 @@ from Crypto.Random import get_random_bytes
 from aes_block import AESBlock
 from key_schedule import expand_key
 from padding import pad_pkcs7, unpad_pkcs7
-from config import aes_key_len
+from settings import aes_key_len
 
 import hashlib
 import time

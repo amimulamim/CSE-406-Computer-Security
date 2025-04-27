@@ -4,11 +4,10 @@ from socket_wrapper import SecureSocketWrapper
 from prime_utils import PrimeUtils
 from e_curve import EllipticCurve
 from ec_point import ECPoint
-from config import aes_key_len
-from aes_cbc import AESCBC
+from config import aes_key_len, aes_encryption_strategy
 
 def main():
-    server = SecureSocketWrapper(role='server', host='127.0.0.1', port=9999,aes_bit=aes_key_len, encryption_strategy=AESCBC)
+    server = SecureSocketWrapper(role='server', host='127.0.0.1', port=9999,aes_bit=aes_key_len, encryption_strategy=aes_encryption_strategy)   
 
     server.start_connection()
 
