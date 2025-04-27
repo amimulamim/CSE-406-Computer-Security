@@ -164,10 +164,6 @@ class SecureSocketWrapper:
                 else:
                     print(f"[{self.role.upper()} WARNING]: Received unexpected data format.")
 
-            except (ConnectionError, OSError):
-                print(f"[{self.role.upper()} WARNING]: Connection closed.")
-                self.running = False
-                break
             except Exception as e:
                 print(f"[{self.role.upper()} ERROR]: {e}")
                 self.running = False
