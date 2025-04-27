@@ -14,7 +14,7 @@ def main():
 
     # Step 1: Generate and send curve and generator
     print("[CLIENT] Generating curve and point...")
-    p = PrimeUtils.generate_prime(aes_key_len)  # or 192/256 for more security
+    p = PrimeUtils.generate_prime(aes_key_len+10)  # or 192/256 for more security
     a, b = PrimeUtils.random_curve_coefficients(p)
     curve = EllipticCurve(a, b, p)
     Gx, Gy = curve.find_point_on_curve(strategy='tonelli')  # or 'euler'

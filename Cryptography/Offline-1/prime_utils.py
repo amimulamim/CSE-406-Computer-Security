@@ -7,7 +7,6 @@ class PrimeUtils:
     @staticmethod
     def generate_prime(bits: int) -> int:
         """Generate a random prime number of given bit length."""
-        assert bits in (128, 192, 256), "Bit length must be 128, 192, or 256"
         lower = 2 ** (bits - 1)
         upper = 2 ** bits - 1
         return randprime(lower, upper)
