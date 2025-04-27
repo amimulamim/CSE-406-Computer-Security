@@ -20,6 +20,7 @@ class AESCBC:
         assert block_size == 16, "AES only supports 16-byte blocks (128 bits)"
         self.key = key
         self.block_size = block_size
+        self.used_ivs = set()
 
         start_time= time.time()
         self.round_keys = expand_key(key)
@@ -38,7 +39,7 @@ class AESCBC:
         return xor_bytes(decrypted, prev)
 
     def encrypt_text(self, plaintext: bytes) -> bytes:
-        iv = get_random_bytes(self.block_size)
+        iv = self._generate_unique_iv()
         padded = pad_pkcs7(plaintext, self.block_size)
         ciphertext = b''
         prev = iv
@@ -96,6 +97,13 @@ class AESCBC:
     def decrypt_bytes(self, encrypted_bytes: bytes) -> bytes:
         return self.decrypt_text(encrypted_bytes)
 
+    #private method to generate a unique IV
+    def _generate_unique_iv(self) -> bytes:
+        while True:
+            iv = get_random_bytes(self.block_size)
+            if iv not in self.used_ivs:
+                self.used_ivs.add(iv)
+                return iv
 
   
 
