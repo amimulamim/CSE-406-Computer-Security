@@ -1,12 +1,8 @@
-import os
-from Crypto.Random import get_random_bytes
+
 from aes_block import AESBlock
 from key_schedule import expand_key
 from padding import pad_pkcs7, unpad_pkcs7
-from settings import aes_key_len
 
-import hashlib
-import time
 
 from aes_strategy import AESStrategy
 
@@ -16,7 +12,7 @@ from aes_strategy import AESStrategy
 
 class AESCBC(AESStrategy):
     def __init__(self, key: bytes, block_size: int = 16,debug: bool = False):
-        from config import aes_key_len  # Import config inside
+        from settings import aes_key_len  # Import config inside
         super().__init__(key, aes_key_len, block_size, debug)
 
     def _encrypt_block(self, block: bytes, prev: bytes) -> bytes:
