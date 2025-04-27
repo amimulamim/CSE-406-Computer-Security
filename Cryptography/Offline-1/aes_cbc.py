@@ -3,6 +3,7 @@ from Crypto.Random import get_random_bytes
 from aes_block import AESBlock
 from key_schedule import expand_key
 from padding import pad_pkcs7, unpad_pkcs7
+from config import aes_key_len
 
 import hashlib
 import time
@@ -16,14 +17,13 @@ def xor_bytes(a: bytes, b: bytes) -> bytes:
 class AESCBC:
     def __init__(self, key: bytes, block_size: int = 16,debug: bool = False):
         self.debug = debug
-        assert len(key) in (16, 24, 32), "Key must be 128, 192, or 256 bits"
         assert block_size == 16, "AES only supports 16-byte blocks (128 bits)"
-        self.key = key
+        self.key = self._process_key(key, aes_key_len)
         self.block_size = block_size
         self.used_ivs = set()
 
         start_time= time.time()
-        self.round_keys = expand_key(key)
+        self.round_keys = expand_key(self.key)
         self.key_schedule_time = (time.time() - start_time)*1000 #in ms
 
     def _encrypt_block(self, block: bytes, prev: bytes) -> bytes:
@@ -104,6 +104,14 @@ class AESCBC:
             if iv not in self.used_ivs:
                 self.used_ivs.add(iv)
                 return iv
+            
+
+    def _process_key(self, key: bytes, aes_strength: int) -> bytes:
+        if aes_strength not in (128, 192, 256):
+            raise ValueError("AES strength must be 128, 192, or 256 bits")
+
+        hashed = hashlib.sha256(key).digest()
+        return hashed[:aes_strength // 8]
 
   
 

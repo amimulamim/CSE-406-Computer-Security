@@ -5,7 +5,7 @@ from logger import print_hex_ascii
 
 
 def main():
-    key = b"BUET CSE20 Batch"  # 16 bytes = AES-128
+    key = b"BUET CSE2020 Batch sgddeghdehdehjdeqhjkedhbjdehbjdehj  "  # 16 bytes = AES-128
     plaintext = b"We need picnic"
 
     aes = AESCBC(key)
