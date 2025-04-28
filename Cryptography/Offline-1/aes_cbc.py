@@ -42,23 +42,7 @@ class AESCBC(AESStrategy):
         self._debug_info({"IV": ' '.join(f'{b:02X}' for b in iv)})
         return iv + ciphertext
 
-    # def decrypt_text(self, ciphertext: bytes) -> bytes:
-    #     if len(ciphertext) < self.block_size:
-    #         raise ValueError("Ciphertext too short to contain IV")
-        
-    #     iv = ciphertext[:self.block_size]
-    #     ciphertext = ciphertext[self.block_size:]
-    #     decrypted = b''
-    #     prev = iv
-    #     for i in range(0, len(ciphertext), self.block_size):
-    #         block = ciphertext[i:i + self.block_size]
-    #         plain_block = self._decrypt_block(block, prev)
-    #         decrypted += plain_block
-    #         prev = block
 
-    #     self._debug_info({"IV": ' '.join(f'{b:02X}' for b in iv)})
-
-    #     return unpad_pkcs7(decrypted)
     
     def _decrypt_single(self, args: Tuple[bytes, bytes]) -> bytes:
         block, prev = args
