@@ -37,7 +37,7 @@ class SecureSocketWrapper:
             self.sock.listen(1)
             print(f"[SERVER] Listening on {self.host}:{self.port}...")
             self.conn, _ = self.sock.accept()
-            print(f"[SERVER] Connection accepted.")
+            print("[SERVER] Connection accepted.")
         else:
             self.sock.connect((self.host, self.port))
             self.conn = self.sock
@@ -102,7 +102,7 @@ class SecureSocketWrapper:
         if not self.encryption_strategy_class:
             raise ValueError("Encryption strategy class not provided.")
 
-        self.aes = self.encryption_strategy_class(self.shared_key)  # created AESStrategy object dynamically!
+        self.aes = self.encryption_strategy_class(self.shared_key,parallel=True)  # created AESStrategy object dynamically!
   
 
 
@@ -135,6 +135,7 @@ class SecureSocketWrapper:
         print(f"\n[{self.role.upper()} RECEIVED TEXT]: {plaintext.decode()}")
 
     def receive_file(self, filename: str, ciphertext: bytes):
+        print(f"[{self.role.upper()}] Receiving file '{filename}'...")
         raw = self.aes.decrypt_text(ciphertext)
         
         save_path = os.path.join(self.folder, filename)

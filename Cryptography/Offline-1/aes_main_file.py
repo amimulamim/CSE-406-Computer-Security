@@ -7,8 +7,9 @@ from config import aes_encryption_strategy
 def main():
     key = b"BUET CSE2020 Batch"  # 16 bytes = AES-128
     plaintext = b"We need picnic"
+    filepath="server_files/images.jpeg"
 
-    aes = aes_encryption_strategy(key,parallel=True)
+    aes = aes_encryption_strategy(key,parallel=True)  # created AESStrategy object dynamically!
 
     print("Key:")
     print_hex_ascii(key)
@@ -16,9 +17,11 @@ def main():
     print("Plain Text:")
     print_hex_ascii( plaintext)
 
+    with open(filepath, 'rb') as f:
+        file_data = f.read()
 
     start_enc = time.time()
-    ciphertext = aes.encrypt_text(plaintext)
+    ciphertext = aes.encrypt_text(file_data)
     end_enc = time.time()
 
     print("Ciphered Text:")

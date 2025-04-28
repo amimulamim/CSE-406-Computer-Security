@@ -4,10 +4,13 @@ import os
 import time
 from key_schedule import expand_key
 from Crypto.Random import get_random_bytes
+from typing import List
 
 class AESStrategy(ABC):
-    def __init__(self, key: bytes, aes_strength: int, block_size: int = 16, debug: bool = False):
+    def __init__(self, key: bytes, aes_strength: int, block_size: int = 16, debug: bool = False, parallel: bool = True):
+        
         self.debug = debug
+        self.parallel = parallel
         assert block_size == 16, "AES only supports 16-byte blocks (128 bits)"
         assert aes_strength in (128, 192, 256), "AES strength must be 128, 192, or 256 bits"
         self.block_size = block_size
@@ -35,6 +38,10 @@ class AESStrategy(ABC):
 	
     def _xor_bytes(self,a: bytes, b: bytes) -> bytes:
         return bytes(x ^ y for x, y in zip(a, b))
+    
+    def _split_blocks(self, data: bytes) -> List[bytes]:
+        return [data[i:i+self.block_size] for i in range(0, len(data), self.block_size)]
+
 
     def encrypt_file(self, input_path: str, output_path: str):
         with open(input_path, 'rb') as f:
