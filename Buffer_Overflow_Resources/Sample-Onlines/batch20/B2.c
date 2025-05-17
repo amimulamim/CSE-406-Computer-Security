@@ -4,7 +4,7 @@
 
 int foo(char *input) {
     int canary = 0xDEADBEEF; 
-    char buffer[<param_1>];
+    char buffer[185];
 
     strcpy(buffer, input);
 
@@ -19,10 +19,10 @@ int foo(char *input) {
 
 int main() {
     FILE *badfile;
-    char data[<param_2>];
+    char data[371];
 
     badfile = fopen("badfile", "r");
-    fread(data, sizeof(char), <param_2>, badfile);
+    fread(data, sizeof(char), 370, badfile);
     foo(data);
     printf("Finished main\n");
 

@@ -7,7 +7,7 @@ int bof(char *str)
     int arr[10];
     arr[5] = 7;
     {
-		char buffer[<Param_1>];
+		char buffer[614];
 
 		/* The following statement has a buffer overflow problem */ 
 		strcpy(buffer, str);
@@ -18,7 +18,7 @@ int bof(char *str)
 
 int foo(char *str)
 {
-    int arr[<Param_2>];
+    int arr[1633];
     arr[120] = 23;
     bof(str);
     return 1;
@@ -32,12 +32,12 @@ int secret()
 
 int main(int argc, char **argv)
 {
-    char str[<Param_3>];
+    char str[1014];
     FILE *badfile;
 	
     bof("Normal Execution\n");
     badfile = fopen("badfile", "r");
-    fread(str, sizeof(char), <Param_3>, badfile);
+    fread(str, sizeof(char), 1014, badfile);
     foo(str);
 
     printf("Try Again\n");

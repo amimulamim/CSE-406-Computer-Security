@@ -37,10 +37,10 @@ void inside_dark_web(int secret, int secret_no)
 	}
 }
 
-void get_service(char *user, char *pass)
+void get_service(/* char *user, char *pass    */    )
 {
-	char buffer[PARAM_1];
-	strcpy(buffer, pass);
+//	char buffer[PARAM_1];
+//	strcpy(buffer, pass);
 	printf("Service running on!\n");
 }
 
@@ -71,6 +71,18 @@ void execute(char *name, char *pass)
 	strcpy(user->pass, pass);
 
 	service->execute(username, user->pass);
+        printf("Size of Service: %zu\n", sizeof(Service));
+
+	printf("returning from execute\n");
+	printf("service addr %p\n",service);
+	printf("user addr %p\n",user);
+
+	printf("check pass %p\n",check_password);
+	printf("get service %p\n",get_service);
+	printf("inside dark web %p\n",inside_dark_web);
+
+
+
 }
 
 int main()

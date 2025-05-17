@@ -4,7 +4,9 @@
 
 char* foo();
 int bar(int x);
-int execute(char* m_code);
+int execute(
+	char* m_code
+		);
 
 char code[] =
   "\x31\xc0"             /* xorl    %eax,%eax              */
@@ -21,17 +23,28 @@ char code[] =
 ;
 
 int bof(char *str){
-    char buffer[<param_1>];	
+    char buffer[324];	
     strcpy(buffer, str);
     return 1;
 }
 
-int execute(char* m_code){
+int execute
+(
+char* m_code
+ ){
+//   printf("inside execute");
+   //printf("code is %s\n",m_code);
    ((void(*)( ))m_code)( );
 }
+/*
+void test(){
+ printf("inside test\n");
+ }
+*/
 
 char* foo(){
     printf("Inside Foo\n");
+
     return code;
 }
 
@@ -41,11 +54,11 @@ int bar(int x){
 }
 
 int main(int argc, char **argv){
-    char str[<param_2> + 1];
+    char str[2030 + 1];
     FILE *badfile;
     badfile = fopen("badfile", "r");
     printf("Inside Main\n");
-    fread(str, sizeof(char), <param_2>, badfile);
+    fread(str, sizeof(char), 2030, badfile);
     bof(str);
     printf("Returned Properly\n");
     return 1;

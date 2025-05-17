@@ -9,7 +9,7 @@ int bof(char *str)
 
 
 {
-	char buffer[<param_1>];
+	char buffer[977];
 	/* The following statement has a buffer overflow problem */
 	strcpy(buffer, str);
 	//printf("Returning from BOF\n");
@@ -28,11 +28,11 @@ int bar(int x)
 }
 int main(int argc, char **argv)
 {
-	char str[<param_2> + 1];
+	char str[2197 + 1];
 	FILE *badfile;
 	badfile = fopen("badfile", "r");
 	printf("Inside Main\n");
-	fread(str, sizeof(char), <param_2>, badfile);
+	fread(str, sizeof(char), 2197, badfile);
 	bof(str);
 	printf("Returned Properly\n");
 	return 1;

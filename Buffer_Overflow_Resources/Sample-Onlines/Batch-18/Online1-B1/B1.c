@@ -4,9 +4,9 @@
 #include <stddef.h>
 
 
-#define PARAM_1 <PARAM_1>
-#define PARAM_2 <PARAM_2>
-#define PARAM_3 <PARAM_3>
+#define PARAM_1 33
+#define PARAM_2 77
+#define PARAM_3 377
 
 typedef struct {
         char name[PARAM_1];
@@ -35,11 +35,23 @@ void overflow_in_action(char * str){
         data = malloc(sizeof(Temp));
         ptr = malloc(sizeof(Callback));
 
+	printf("data address %x",&data);
+
         strcpy(buffer, str);
         ptr->fp = random_print;
 
+
+            printf("buffer        : %p\n", buffer);
+    printf("data          : %p\n", data);
+    printf("data->name    : %p\n", data->name);
+    printf("ptr           : %p\n", ptr);
+    printf("&ptr->fp      : %p\n", &(ptr->fp));
+    printf("hack          : %p\n", hack);
+    printf("random_print  : %p\n", random_print);
         strcpy(data->name, str);
         ptr->fp();
+
+
 }
 
 int main() {
