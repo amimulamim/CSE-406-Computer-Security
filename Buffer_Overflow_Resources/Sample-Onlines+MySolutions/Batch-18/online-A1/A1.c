@@ -37,10 +37,10 @@ void inside_dark_web(int secret, int secret_no)
 	}
 }
 
-void get_service(/* char *user, char *pass    */    )
+void get_service( char *user, char *pass        )
 {
-//	char buffer[PARAM_1];
-//	strcpy(buffer, pass);
+	char buffer[PARAM_1];
+	strcpy(buffer, pass);
 	printf("Service running on!\n");
 }
 
