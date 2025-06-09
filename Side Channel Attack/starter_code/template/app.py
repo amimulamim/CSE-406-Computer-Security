@@ -27,6 +27,8 @@ def collect_trace():
     try:
         data = request.get_json()
         trace = data.get('trace')
+        print("Received trace:", trace[:10], "...", len(trace), "samples")
+
 
         if not trace or not isinstance(trace, list):
             return jsonify({"error": "Invalid trace data"}), 400
