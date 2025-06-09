@@ -37,6 +37,9 @@
             <!--Implement Collect Trace button. It should call collectTraceData(). -->
             <!--Implement Download Traces button. It should call downloadTraces(). -->
             <!--Implement Clear Results button. It should call clearResults(). -->
+            <button @click="collectTraceData()" :disabled="isCollecting">Collect Trace</button>
+            <button @click="downloadTraces()">Download Traces</button>
+            <button @click="clearResults()">Clear Results</button>
         </div>
         
         <div x-show="status" role="alert" x-text="status" 
