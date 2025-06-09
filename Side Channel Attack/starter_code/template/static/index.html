@@ -78,14 +78,26 @@
       </div>
     </template>
 
-    <!-- Heatmap Gallery -->
+    
+    <!-- Heatmap Gallery with Metadata -->
     <template x-if="heatmaps.length > 0 && showingTraces">
-      <div class="heatmap-gallery">
-        <template x-for="(img, index) in heatmaps" :key="index">
-          <img :src="img" :alt="'Heatmap ' + (index + 1)" />
+    <div class="heatmap-gallery" style="flex-direction: column; align-items: center;">
+        <template x-for="(map, index) in heatmaps" :key="index">
+        <div style="text-align: center;">
+            <img :src="map.src" :alt="'Heatmap ' + (index + 1)" />
+            <p>
+            <strong>Min:</strong> <span x-text="map.min"></span> |
+            <strong>Max:</strong> <span x-text="map.max"></span> |
+            <strong>Range:</strong> <span x-text="map.range"></span> |
+            <strong>Samples:</strong> <span x-text="map.samples"></span>
+            </p>
+        </div>
         </template>
-      </div>
+    </div>
     </template>
+
+
+    
   </main>
 
   <script src="index.js"></script>
