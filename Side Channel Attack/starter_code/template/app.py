@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, Response
+import json
 import os
 import matplotlib.pyplot as plt
 import numpy as np
@@ -96,6 +97,17 @@ def clear_results():
     except Exception as e:
         print("Error clearing results:", e)
         return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route('/download_traces', methods=['GET'])
+def download_traces():
+    json_data = json.dumps(stored_traces, indent=2)
+    return Response(
+        json_data,
+        mimetype='application/json',
+        headers={"Content-Disposition": "attachment;filename=traces.json"}
+    )
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
