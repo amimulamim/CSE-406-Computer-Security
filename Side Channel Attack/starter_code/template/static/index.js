@@ -65,7 +65,15 @@ function app() {
         const result = await response.json(); // { heatmap: "path/to/img" }
 
         this.traceData.push(traceData);
-        this.heatmaps.push(result.heatmap);
+        // this.heatmaps.push(result.heatmap);
+        this.heatmaps.push({
+          src: result.heatmap,
+          min: result.min,
+          max: result.max,
+          range: result.range,
+          samples: result.samples
+        });
+
         this.status = "Trace collected and heatmap generated!";
       } catch (error) {
         console.error("Error collecting trace:", error);
