@@ -43,14 +43,23 @@ def collect_trace():
         range_val = int(max_val - min_val)
         samples = int(trace_array.shape[1])
 
+        filename = f"heatmap_{uuid.uuid4().hex[:8]}.png"
+        filepath = os.path.join(HEATMAP_DIR, filename)
+
         # Generate heatmap
-        fig, ax = plt.subplots(figsize=(12, 1.5))
+
+
+        fig, ax = plt.subplots(figsize=(24, 2))  # Wider figure
         ax.imshow(trace_array, cmap='plasma', aspect='auto')
         ax.axis('off')
 
-        filename = f"heatmap_{uuid.uuid4().hex[:8]}.png"
-        filepath = os.path.join(HEATMAP_DIR, filename)
-        plt.savefig(filepath, bbox_inches='tight', pad_inches=0.1)
+        # Save without tight layout cropping
+        plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+        plt.savefig(filepath, dpi=200, bbox_inches='tight', pad_inches=0.01)
+
+
+
+
         plt.close(fig)
 
         heatmap_url = f"/static/heatmaps/{filename}"
