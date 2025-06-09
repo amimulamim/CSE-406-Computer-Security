@@ -24,12 +24,6 @@ def static_files(path):
 
 @app.route('/collect_trace', methods=['POST'])
 def collect_trace():
-    """
-    Receive trace data and generate heatmap.
-    1. Receive trace as JSON list.
-    2. Generate heatmap using matplotlib.
-    3. Save and return heatmap path.
-    """
     try:
         data = request.get_json()
         trace = data.get('trace')
@@ -37,16 +31,21 @@ def collect_trace():
         if not trace or not isinstance(trace, list):
             return jsonify({"error": "Invalid trace data"}), 400
 
-        # Store the trace
         stored_traces.append(trace)
 
-        # Generate heatmap (1-row)
         trace_array = np.array(trace).reshape(1, -1)
+
+        # Calculate metadata
+        min_val = int(np.min(trace_array))
+        max_val = int(np.max(trace_array))
+        range_val = int(max_val - min_val)
+        samples = int(trace_array.shape[1])
+
+        # Generate heatmap
         fig, ax = plt.subplots(figsize=(12, 1.5))
-        heatmap = ax.imshow(trace_array, cmap='hot', aspect='auto')
+        ax.imshow(trace_array, cmap='plasma', aspect='auto')
         ax.axis('off')
 
-        # Save image
         filename = f"heatmap_{uuid.uuid4().hex[:8]}.png"
         filepath = os.path.join(HEATMAP_DIR, filename)
         plt.savefig(filepath, bbox_inches='tight', pad_inches=0.1)
@@ -55,7 +54,13 @@ def collect_trace():
         heatmap_url = f"/static/heatmaps/{filename}"
         stored_heatmaps.append(heatmap_url)
 
-        return jsonify({"heatmap": heatmap_url})
+        return jsonify({
+            "heatmap": heatmap_url,
+            "min": min_val,
+            "max": max_val,
+            "range": range_val,
+            "samples": samples
+        })
 
     except Exception as e:
         print("Error in /collect_trace:", e)
