@@ -113,7 +113,7 @@ function app() {
     // Clear all results from backend and UI
     async clearResults() {
       try {
-        const response = await fetch("/clear_results", { method: "POST" });
+        const response = await fetch("/api/clear_results", { method: "POST" });
         if (!response.ok) throw new Error("Failed to clear results");
 
         this.traceData = [];
