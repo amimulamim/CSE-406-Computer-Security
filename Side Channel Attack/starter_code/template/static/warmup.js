@@ -2,20 +2,54 @@
 const LINESIZE = 64;
 
 function readNlines(n) {
-  /*
-   * Implement this function to read n cache lines.
-   * 1. Allocate a buffer of size n * LINESIZE.
-   * 2. Read each cache line (read the buffer in steps of LINESIZE) 10 times.
-   * 3. Collect total time taken in an array using `performance.now()`.
-   * 4. Return the median of the time taken in milliseconds.
-   */
+  const bufferSize = n * LINESIZE;
+  const buffer = new Uint8Array(bufferSize);
+  const timings = [];
+
+  for (let repeat = 0; repeat < 10; repeat++) {
+    const start = performance.now();
+
+    // Access every cache line
+    for (let i = 0; i < bufferSize; i += LINESIZE) {
+      buffer[i];
+    }
+
+    const end = performance.now();
+    timings.push(end - start);
+  }
+
+  // Sort and return median
+  timings.sort((a, b) => a - b);
+  const mid = Math.floor(timings.length / 2);
+  return timings.length % 2 === 0
+    ? (timings[mid - 1] + timings[mid]) / 2
+    : timings[mid];
 }
 
 self.addEventListener("message", function (e) {
   if (e.data === "start") {
     const results = {};
 
-    /* Call the readNlines function for n = 1, 10, ... 10,000,000 and store the result */
+    const inputSizes = [
+      1,
+      10,
+      100,
+      1000,
+      10000,
+      100000,
+      1000000,
+      10000000,
+    ];
+
+    for (const n of inputSizes) {
+      try {
+        const medianTime = readNlines(n);
+        results[n] = medianTime;
+      } catch (err) {
+        console.error("Failed for n =", n, err);
+        break;
+      }
+    }
 
     self.postMessage(results);
   }
