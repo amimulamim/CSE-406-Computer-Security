@@ -17,14 +17,18 @@ from sklearn.model_selection import StratifiedShuffleSplit
 from train import TraceDataset, FingerprintClassifier, train as train_model
 
 # Configuration
-DATASET_PATH = "converted_dataset.json"
+DATASET_PATH   = "converted_dataset.json"
 INPUT_SIZE     = 1000
 HIDDEN_SIZE    = 128
 TRAIN_SPLIT    = 0.8
 EPOCHS         = 50
-REPEATS        = 10         # fewer repeats to save time
+REPEATS        = 10
 LEARNING_RATES = [1e-2, 5e-3, 1e-3, 5e-4, 1e-4]
-BATCH_SIZES    = [16, 32, 64, 128, 256]  # added 16 and 256
+BATCH_SIZES    = [16, 32, 64, 128, 256]
+
+# Ensure analysis folder exists
+OUT_DIR = "analysis"
+os.makedirs(OUT_DIR, exist_ok=True)
 
 def main():
     # 1) Load & split dataset
@@ -85,6 +89,13 @@ def main():
     plt.legend(title="Batch Sizes")
     plt.grid(True, linestyle='--', alpha=0.5)
     plt.tight_layout()
+
+    # 6) Save plot into analysis/
+    out_img = os.path.join(OUT_DIR, "hyperparam_tuning_results.png")
+    plt.savefig(out_img, dpi=150)
+    print(f"🔖 Plot saved to {out_img}")
+
+    # 7) Display on screen
     plt.show()
 
 if __name__ == "__main__":
