@@ -43,6 +43,9 @@ def parse_arguments():
                        help='Enable debug mode (visible browser + verbose output)')
     parser.add_argument('--traces', type=int, default=TRACES_PER_SITE,
                        help=f'Number of traces per site (default: {TRACES_PER_SITE})')
+    
+    parser.add_argument('--site-index', type=int, choices=range(len(WEBSITES)),
+                       help='Collect only for this site index (0..2)')
     return parser.parse_args()
 
 def signal_handler(sig, frame):
@@ -196,12 +199,12 @@ def collect_fingerprints(driver):
     return total_collected
 
 def main():
-    global HEADLESS_MODE, BACKGROUND_MODE, TRACES_PER_SITE
-    
-    # Parse command line arguments
+    global HEADLESS_MODE, BACKGROUND_MODE, TRACES_PER_SITE, WEBSITES
+
+    # 1) Parse command line arguments
     args = parse_arguments()
-    
-    # Override configuration based on arguments
+
+    # 2) Override headless/background based on args
     if args.visible or args.debug:
         HEADLESS_MODE = False
         print("👁️  Running in visible mode (as requested)")
@@ -209,44 +212,61 @@ def main():
     if args.debug:
         BACKGROUND_MODE = False
         print("🐛 Debug mode enabled - browser will be more visible")
-    
+
+    # 3) Number of traces per site
     TRACES_PER_SITE = args.traces
-    
+
+    # 4) OPTIONAL SITE FILTER
+    #    If --site-index was passed, restrict WEBSITES to just that one
+    if getattr(args, "site_index", None) is not None:
+        idx = args.site_index
+        # validate just in case
+        if not (0 <= idx < len(WEBSITES)):
+            print(f"❌ Invalid --site-index {idx}, must be 0..{len(WEBSITES)-1}")
+            sys.exit(1)
+        WEBSITES = [WEBSITES[idx]]
+        print(f"🚩 Filtering to site index {idx}: {WEBSITES[0]}")
+
+    # 5) Check backend server
     if not is_server_running():
         print("❌ Flask server not running. Start it with: python3 app.py")
         return
 
+    # 6) Initialize DB
     print("🧠 Initializing database...")
     database.db.init_database()
-    
-    # Show current progress
+
+    # 7) Show current progress
     current_counts = database.db.get_traces_collected()
     total_needed = len(WEBSITES) * TRACES_PER_SITE
-    total_current = sum(current_counts.values())
-    
+    total_current = sum(current_counts.get(w, 0) for w in WEBSITES)
     print(f"📊 Current progress: {total_current}/{total_needed} traces collected")
-    for website, count in current_counts.items():
+    for website in WEBSITES:
+        count = current_counts.get(website, 0)
         print(f"  - {website}: {count}/{TRACES_PER_SITE}")
-    
+
+    # 8) Already done?
     if is_collection_complete():
         print("✅ Collection already complete!")
         return
 
+    # 9) Launch browser
     mode_str = "headless" if HEADLESS_MODE else "visible"
     background_str = " (background)" if BACKGROUND_MODE else ""
     print(f"🚀 Launching browser in {mode_str} mode{background_str}...")
     driver = setup_webdriver()
 
     try:
+        # 10) Clear old results
         print("⚙️ Navigating to fingerprinting page to clear old results...")
         driver.get(FINGERPRINTING_URL)
         wait = WebDriverWait(driver, 10)
         clear_trace_results(driver, wait)
 
+        # 11) Start collection
         print("🧪 Starting fingerprint collection...")
         print("💡 You can now continue working - the browser is running in the background!")
         print("   Press Ctrl+C to stop collection and save progress.")
-        
         collect_fingerprints(driver)
 
     except KeyboardInterrupt:
@@ -255,6 +275,7 @@ def main():
         print(f"❌ Error during collection: {e}")
         traceback.print_exc()
     finally:
+        # 12) Cleanup and save
         print("🧹 Cleaning up browser...")
         driver.quit()
         print("💾 Exporting final dataset...")
