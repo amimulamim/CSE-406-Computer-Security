@@ -134,7 +134,7 @@ def is_collection_complete():
     remaining = sum(max(0, TRACES_PER_SITE - current_counts.get(w, 0)) for w in WEBSITES)
     return remaining == 0
 
-def collect_single_trace(driver, wait, website_url):
+def collect_single_trace(driver, wait, website_url, site_index_mapping):
     """Collect a single trace for a website."""
     try:
         # 1. Go to fingerprinting site
@@ -169,15 +169,16 @@ def collect_single_trace(driver, wait, website_url):
         trace = traces[-1]
         print(f"✅ Trace for {website_url} — {len(trace)} samples")
 
-        # 6. Save to DB
-        return database.db.save_trace(website_url, WEBSITES.index(website_url), trace)
+        # 6. Save to DB using the correct original site index
+        original_site_index = site_index_mapping[website_url]
+        return database.db.save_trace(website_url, original_site_index, trace)
 
     except Exception as e:
         print(f"❌ Error collecting trace for {website_url}: {e}")
         traceback.print_exc()
         return False
 
-def collect_fingerprints(driver):
+def collect_fingerprints(driver, site_index_mapping):
     wait = WebDriverWait(driver, 10)
     total_collected = 0
 
@@ -188,7 +189,7 @@ def collect_fingerprints(driver):
                 continue
 
             print(f"\n🌐 Collecting trace #{count + 1} for {site}")
-            success = collect_single_trace(driver, wait, site)
+            success = collect_single_trace(driver, wait, site, site_index_mapping)
             if success:
                 total_collected += 1
             else:
@@ -218,14 +219,23 @@ def main():
 
     # 4) OPTIONAL SITE FILTER
     #    If --site-index was passed, restrict WEBSITES to just that one
+    site_index_mapping = {}  # Map website URL to its original index
     if getattr(args, "site_index", None) is not None:
         idx = args.site_index
         # validate just in case
         if not (0 <= idx < len(WEBSITES)):
             print(f"❌ Invalid --site-index {idx}, must be 0..{len(WEBSITES)-1}")
             sys.exit(1)
-        WEBSITES = [WEBSITES[idx]]
-        print(f"🚩 Filtering to site index {idx}: {WEBSITES[0]}")
+        # Store the original index before filtering
+        selected_website = WEBSITES[idx]
+        WEBSITES = [selected_website]
+        # Create mapping to preserve original index
+        site_index_mapping[selected_website] = idx
+        print(f"🚩 Filtering to site index {idx}: {selected_website}")
+    else:
+        # Create mapping for all websites to their original indices
+        for i, website in enumerate(WEBSITES):
+            site_index_mapping[website] = i
 
     # 5) Check backend server
     if not is_server_running():
@@ -267,7 +277,7 @@ def main():
         print("🧪 Starting fingerprint collection...")
         print("💡 You can now continue working - the browser is running in the background!")
         print("   Press Ctrl+C to stop collection and save progress.")
-        collect_fingerprints(driver)
+        collect_fingerprints(driver, site_index_mapping)
 
     except KeyboardInterrupt:
         print("\n❗ Interrupted by user.")
