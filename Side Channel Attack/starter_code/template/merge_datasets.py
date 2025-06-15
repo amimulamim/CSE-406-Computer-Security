@@ -3,7 +3,7 @@ import json
 import sys
 import os
 
-def merge_json_files(input_files, output_file="dataset_merged.json"):
+def merge_json_files(input_files, output_file="Datasets/dataset_merged.json"):
     merged_data = []
 
     for file_path in input_files:

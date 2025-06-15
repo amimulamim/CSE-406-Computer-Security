@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedShuffleSplit
 
 # Configuration
-DATASET_PATH = "converted_dataset.json"
+DATASET_PATH = "Datasets/converted_dataset.json"
 MODELS_DIR = "saved_models"
 BATCH_SIZE = 64
 EPOCHS = 50  

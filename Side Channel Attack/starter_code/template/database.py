@@ -92,7 +92,7 @@ class Database:
         finally:
             session.close()
     
-    def export_to_json(self, output_path="dataset.json"):
+    def export_to_json(self, output_path="Datasets/dataset.json"):
         """Export the database contents to a JSON file"""
         session = self.Session()
         try:

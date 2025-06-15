@@ -91,6 +91,6 @@ def validate_and_count(path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} dataset.json")
+        print(f"Usage: {sys.argv[0]} Datasets/dataset.json")
         sys.exit(1)
     sys.exit(validate_and_count(sys.argv[1]))

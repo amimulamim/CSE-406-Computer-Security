@@ -2,10 +2,10 @@ import json
 import sys
 from collections import defaultdict
 
-# Get input file name from command line or default to 'dataset.json'
-input_file = sys.argv[1] if len(sys.argv) > 1 else "dataset.json"
+# Get input file name from command line or default to 'Datasets/dataset.json'
+input_file = sys.argv[1] if len(sys.argv) > 1 else "Datasets/dataset.json"
 # output_file = "converted_" + input_file
-output_file = "converted_dataset.json"
+output_file = "Datasets/converted_dataset.json"
 
 # Load data
 with open(input_file, "r") as f:

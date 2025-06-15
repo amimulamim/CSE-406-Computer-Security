@@ -17,7 +17,7 @@ from sklearn.model_selection import StratifiedShuffleSplit
 from train import TraceDataset, FingerprintClassifier, train as train_model
 
 # Configuration
-DATASET_PATH   = "converted_dataset.json"
+DATASET_PATH   = "Datasets/converted_dataset.json"
 INPUT_SIZE     = 1000
 HIDDEN_SIZE    = 128
 TRAIN_SPLIT    = 0.8
@@ -27,7 +27,7 @@ LEARNING_RATES = [1e-2, 5e-3, 1e-3, 5e-4, 1e-4]
 BATCH_SIZES    = [16, 32, 64, 128, 256]
 
 # Checkpoint & output paths
-CHECKPOINT_FILE = "tuning_checkpoint.json"
+CHECKPOINT_FILE = "Datasets/tuning_checkpoint.json"
 OUT_DIR         = "analysis"
 os.makedirs(OUT_DIR, exist_ok=True)
 

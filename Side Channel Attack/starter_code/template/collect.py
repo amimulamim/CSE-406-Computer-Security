@@ -26,7 +26,7 @@ WEBSITES = [
 
 TRACES_PER_SITE = 2000
 FINGERPRINTING_URL = "http://localhost:5000" 
-OUTPUT_PATH = "dataset.json"
+OUTPUT_PATH = "Datasets/dataset.json"
 
 # Default configuration options (can be overridden with command line args)
 HEADLESS_MODE = True  # Set to False if you need to see the browser for debugging
