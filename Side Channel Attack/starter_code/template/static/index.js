@@ -14,6 +14,7 @@ function app() {
     reloadingModel: false,
     predicting: false,
     predictionResult: null,
+    sidebarOpen: false,
 
     // Initialize the app
     async init() {

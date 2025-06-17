@@ -8,9 +8,121 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .main-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .content-area {
+      flex: 1;
       max-width: 960px;
       margin: 0 auto;
       padding: 20px;
+    }
+
+    .sidebar {
+      width: 350px;
+      background-color: #f8f9fa;
+      border-left: 2px solid #007bff;
+      padding: 20px;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 1001;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar-toggle:hover {
+      background-color: #0056b3;
+    }
+
+    .sidebar-header {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #007bff;
+    }
+
+    .sidebar h2 {
+      color: #007bff;
+      margin: 0;
+      font-size: 1.2em;
+    }
+
+    .model-status {
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: white;
+      border-radius: 5px;
+      border: 1px solid #dee2e6;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status-loaded {
+      background-color: #28a745;
+    }
+
+    .status-not-loaded {
+      background-color: #dc3545;
+    }
+
+    .prediction-result {
+      background-color: white;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 15px;
+      border: 1px solid #dee2e6;
+    }
+
+    .confidence-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .confidence-fill {
+      height: 100%;
+      background-color: #28a745;
+      transition: width 0.3s ease;
     }
 
     .button-group {
@@ -34,133 +146,176 @@
     }
 
     .heatmap-gallery img {
-    width: 100%;
-    max-width: none;
-    display: block;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 8px;
+      width: 100%;
+      max-width: none;
+      display: block;
+      }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+      }
+      .content-area {
+        padding: 10px;
+      }
     }
 
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
   </style>
 </head>
 <body>
-  <main class="container" x-data="app()" x-init="init()">
-    <h1>CSE406: Website Fingerprinting</h1>
+  <div class="main-container" x-data="app()" x-init="init()">
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" :class="{ 'show': sidebarOpen }" @click="sidebarOpen = false"></div>
+    
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" @click="sidebarOpen = !sidebarOpen" x-text="sidebarOpen ? '×' : '🎯'"></button>
 
-    <div class="button-group">
-      <button @click="collectLatencyData()" :disabled="isCollecting">Collect Latency Data</button>
-      <button @click="collectTraceData()" :disabled="isCollecting">Collect Trace</button>
-      <button @click="downloadTraces()">Download Traces</button>
-      <button @click="clearResults()">Clear Results</button>
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <h1>CSE406: Website Fingerprinting</h1>
+
+      <div class="button-group">
+        <button @click="collectLatencyData()" :disabled="isCollecting">Collect Latency Data</button>
+        <button @click="collectTraceData()" :disabled="isCollecting">Collect Trace</button>
+        <button @click="downloadTraces()">Download Traces</button>
+        <button @click="clearResults()">Clear Results</button>
+      </div>
+
+      <div x-show="status" role="alert" x-text="status"
+           :class="{'alert-success': !statusIsError, 'alert-error': statusIsError}"></div>
+
+      <!-- Latency Results Table -->
+      <template x-if="latencyResults && !showingTraces">
+        <div class="results-container">
+          <h3>Latency Results</h3>
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>N</th>
+                <th>Median Access Latency (ms)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="(time, n) in latencyResults" :key="n">
+                <tr>
+                  <td x-text="n"></td>
+                  <td x-text="time.toFixed(6)"></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </template>
+
+      <!-- Heatmap Gallery with Metadata -->
+      <template x-if="heatmaps.length > 0 && showingTraces">
+        <div class="heatmap-gallery" style="flex-direction: column; align-items: center;">
+          <template x-for="(map, index) in heatmaps" :key="index">
+            <div style="text-align: center;">
+              <img :src="map.src" :alt="'Heatmap ' + (index + 1)" />
+              <p>
+                <strong>Min:</strong> <span x-text="map.min"></span> |
+                <strong>Max:</strong> <span x-text="map.max"></span> |
+                <strong>Range:</strong> <span x-text="map.range"></span> |
+                <strong>Samples:</strong> <span x-text="map.samples"></span>
+              </p>
+            </div>
+          </template>
+        </div>
+      </template>
     </div>
 
-    <!-- Real-time Testing Section -->
-    <div style="border: 2px solid #007bff; border-radius: 8px; padding: 20px; margin: 20px 0; background-color: #f8f9fa;">
-      <h2>🔴 Real-time Website Fingerprinting</h2>
-      
+    <!-- Real-time Fingerprinting Sidebar -->
+    <div class="sidebar" :class="{ 'open': sidebarOpen }">
+      <div class="sidebar-header">
+        <h2>🔴 Real-time Fingerprinting</h2>
+      </div>
+
       <!-- Model Status -->
-      <div style="margin-bottom: 15px;">
-        <strong>Model Status:</strong>
-        <span x-show="modelStatus.loaded" style="color: green;">✅ Loaded</span>
-        <span x-show="!modelStatus.loaded" style="color: red;">❌ Not Loaded</span>
-        <span x-show="modelStatus.loaded" x-text="'(Accuracy: ' + modelStatus.accuracy + ')'"></span>
-        <button @click="reloadModel" :disabled="reloadingModel" style="margin-left: 10px;">
+      <div class="model-status">
+        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+          <span class="status-indicator" :class="modelStatus.loaded ? 'status-loaded' : 'status-not-loaded'"></span>
+          <strong>Model Status:</strong>
+          <span x-text="modelStatus.loaded ? 'Loaded' : 'Not Loaded'" style="margin-left: 5px;"></span>
+        </div>
+        <div x-show="modelStatus.loaded" style="font-size: 0.9em; color: #666;">
+          Accuracy: <span x-text="modelStatus.accuracy"></span>
+        </div>
+        <button @click="reloadModel" :disabled="reloadingModel" style="width: 100%; margin-top: 8px; font-size: 0.9em;">
           <span x-show="!reloadingModel">🔄 Reload Model</span>
           <span x-show="reloadingModel">Reloading...</span>
         </button>
       </div>
 
       <!-- Instructions -->
-      <div x-show="modelStatus.loaded" style="margin-bottom: 15px;">
+      <div x-show="modelStatus.loaded" style="margin-bottom: 15px; font-size: 0.9em;">
         <strong>Instructions:</strong>
-        <ol style="margin: 5px 0; padding-left: 20px;">
-          <li>Navigate to one of these websites in a new tab:
-            <ul style="margin: 5px 0;">
-              <li><a href="https://cse.buet.ac.bd/moodle/" target="_blank">BUET Moodle</a></li>
-              <li><a href="https://google.com" target="_blank">Google</a></li>
-              <li><a href="https://prothomalo.com" target="_blank">Prothom Alo</a></li>
-            </ul>
+        <ol style="margin: 8px 0; padding-left: 20px;">
+          <li>Navigate to a target website:
+            <div style="margin: 8px 0;">
+              <a href="https://cse.buet.ac.bd/moodle/" target="_blank" style="display: block; margin: 2px 0;">📚 BUET Moodle</a>
+              <a href="https://google.com" target="_blank" style="display: block; margin: 2px 0;">🔍 Google</a>
+              <a href="https://prothomalo.com" target="_blank" style="display: block; margin: 2px 0;">📰 Prothom Alo</a>
+            </div>
           </li>
-          <li>Come back to this tab and click "Predict Current Website"</li>
+          <li>Come back and click "Predict"</li>
         </ol>
       </div>
 
-      <!-- Real-time Controls -->
-      <div class="button-group" x-show="modelStatus.loaded">
-        <button @click="predictCurrentWebsite" :disabled="predicting" style="background-color: #28a745; border-color: #28a745;">
+      <!-- Prediction Button -->
+      <div x-show="modelStatus.loaded">
+        <button @click="predictCurrentWebsite" :disabled="predicting" style="width: 100%; background-color: #28a745; border-color: #28a745; font-weight: bold;">
           <span x-show="!predicting">🎯 Predict Current Website</span>
           <span x-show="predicting">Predicting...</span>
         </button>
       </div>
 
       <!-- Prediction Results -->
-      <div x-show="predictionResult" style="margin-top: 15px; padding: 15px; background-color: white; border-radius: 5px;">
-        <h3>Prediction Result:</h3>
-        <p><strong>Predicted Website:</strong> <span x-text="predictionResult?.predicted_website" style="color: #007bff; font-weight: bold;"></span></p>
-        <p><strong>Confidence:</strong> <span x-text="(predictionResult?.confidence * 100).toFixed(1) + '%'"></span></p>
+      <div x-show="predictionResult" class="prediction-result">
+        <h3 style="margin: 0 0 10px 0; font-size: 1.1em;">Prediction Result:</h3>
+        <div style="margin-bottom: 10px;">
+          <strong>Website:</strong><br>
+          <span x-text="predictionResult?.predicted_website" style="color: #007bff; font-weight: bold; word-break: break-all; font-size: 0.9em;"></span>
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+          <strong>Confidence:</strong> <span x-text="(predictionResult?.confidence * 100).toFixed(1) + '%'"></span>
+          <div class="confidence-bar">
+            <div class="confidence-fill" :style="'width: ' + (predictionResult?.confidence * 100) + '%'"></div>
+          </div>
+        </div>
         
         <details style="margin-top: 10px;">
-          <summary>All Probabilities</summary>
-          <div style="margin-top: 10px;">
+          <summary style="cursor: pointer; font-size: 0.9em;">All Probabilities</summary>
+          <div style="margin-top: 8px; font-size: 0.8em;">
             <template x-for="(prob, website) in predictionResult?.all_probabilities" :key="website">
-              <div style="display: flex; justify-content: space-between; margin: 5px 0;">
-                <span x-text="website"></span>
-                <span x-text="(prob * 100).toFixed(1) + '%'"></span>
+              <div style="display: flex; justify-content: space-between; margin: 3px 0; padding: 2px 0; border-bottom: 1px solid #eee;">
+                <span x-text="website.split('/')[2] || website" style="flex: 1; margin-right: 8px; word-break: break-all;"></span>
+                <span x-text="(prob * 100).toFixed(1) + '%'" style="font-weight: bold;"></span>
               </div>
             </template>
           </div>
         </details>
       </div>
     </div>
-
-    <div x-show="status" role="alert" x-text="status"
-         :class="{'alert-success': !statusIsError, 'alert-error': statusIsError}"></div>
-
-    <!-- Latency Results Table -->
-    <template x-if="latencyResults && !showingTraces">
-      <div class="results-container">
-        <h3>Latency Results</h3>
-        <table class="results-table">
-          <thead>
-            <tr>
-              <th>N</th>
-              <th>Median Access Latency (ms)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <template x-for="(time, n) in latencyResults" :key="n">
-              <tr>
-                <td x-text="n"></td>
-                <td x-text="time.toFixed(6)"></td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
-      </div>
-    </template>
-
-    
-    <!-- Heatmap Gallery with Metadata -->
-    <template x-if="heatmaps.length > 0 && showingTraces">
-    <div class="heatmap-gallery" style="flex-direction: column; align-items: center;">
-        <template x-for="(map, index) in heatmaps" :key="index">
-        <div style="text-align: center;">
-            <img :src="map.src" :alt="'Heatmap ' + (index + 1)" />
-            <p>
-            <strong>Min:</strong> <span x-text="map.min"></span> |
-            <strong>Max:</strong> <span x-text="map.max"></span> |
-            <strong>Range:</strong> <span x-text="map.range"></span> |
-            <strong>Samples:</strong> <span x-text="map.samples"></span>
-            </p>
-        </div>
-        </template>
-    </div>
-    </template>
-
-
-    
-  </main>
+  </div>
 
   <script src="index.js"></script>
 </body>
