@@ -1,0 +1,22 @@
+name: Deploy to Railway from Subfolder
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '4-1/CSE 406-Computer Security/Side Channel Attack/starter_code/template/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to Railway
+      uses: railway-deploy/railway-action@v2
+      with:
+        railway_token: ${{ secrets.RAILWAY_TOKEN }}
+        service: your-service-name
+        # Deploy only the subfolder
+        working_directory: '4-1/CSE 406-Computer Security/Side Channel Attack/starter_code/template'
