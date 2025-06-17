@@ -9,6 +9,17 @@ function app() {
     statusIsError: false,
     showingTraces: false,
 
+    // Real-time prediction state
+    modelStatus: { loaded: false, accuracy: null },
+    reloadingModel: false,
+    predicting: false,
+    predictionResult: null,
+
+    // Initialize the app
+    async init() {
+      await this.checkModelStatus();
+    },
+
     // Collect latency data using warmup.js worker
     async collectLatencyData() {
       this.isCollecting = true;
@@ -124,6 +135,82 @@ function app() {
         console.error("Clear error:", error);
         this.status = `Error: ${error.message}`;
         this.statusIsError = true;
+      }
+    },
+
+    // Real-time prediction methods
+    async checkModelStatus() {
+      try {
+        const response = await fetch("/api/model/status");
+        if (response.ok) {
+          this.modelStatus = await response.json();
+        }
+      } catch (error) {
+        console.error("Error checking model status:", error);
+      }
+    },
+
+    async reloadModel() {
+      this.reloadingModel = true;
+      try {
+        const response = await fetch("/api/model/reload", { method: "POST" });
+        const result = await response.json();
+        
+        if (result.success) {
+          this.modelStatus = result.model_info;
+          this.status = result.message;
+          this.statusIsError = false;
+        } else {
+          this.status = `Model reload failed: ${result.message}`;
+          this.statusIsError = true;
+        }
+      } catch (error) {
+        console.error("Error reloading model:", error);
+        this.status = `Error reloading model: ${error.message}`;
+        this.statusIsError = true;
+      } finally {
+        this.reloadingModel = false;
+      }
+    },
+
+    async predictCurrentWebsite() {
+      this.predicting = true;
+      this.predictionResult = null;
+      this.status = "Collecting side-channel trace for prediction...";
+      this.statusIsError = false;
+
+      try {
+        // Collect a fresh trace using the worker
+        const worker = new Worker("worker.js");
+        
+        const traceData = await new Promise((resolve) => {
+          worker.onmessage = (e) => resolve(e.data);
+          worker.postMessage("start");
+        });
+
+        worker.terminate();
+
+        // Send trace for prediction
+        const response = await fetch("/api/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ trace: traceData }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Prediction failed");
+        }
+
+        this.predictionResult = await response.json();
+        this.status = `Prediction complete! Website: ${this.predictionResult.predicted_website}`;
+        
+      } catch (error) {
+        console.error("Error during prediction:", error);
+        this.status = `Prediction error: ${error.message}`;
+        this.statusIsError = true;
+      } finally {
+        this.predicting = false;
       }
     },
   };

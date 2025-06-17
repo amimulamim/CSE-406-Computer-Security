@@ -45,7 +45,7 @@
   </style>
 </head>
 <body>
-  <main class="container" x-data="app()">
+  <main class="container" x-data="app()" x-init="init()">
     <h1>CSE406: Website Fingerprinting</h1>
 
     <div class="button-group">
@@ -53,6 +53,65 @@
       <button @click="collectTraceData()" :disabled="isCollecting">Collect Trace</button>
       <button @click="downloadTraces()">Download Traces</button>
       <button @click="clearResults()">Clear Results</button>
+    </div>
+
+    <!-- Real-time Testing Section -->
+    <div style="border: 2px solid #007bff; border-radius: 8px; padding: 20px; margin: 20px 0; background-color: #f8f9fa;">
+      <h2>🔴 Real-time Website Fingerprinting</h2>
+      
+      <!-- Model Status -->
+      <div style="margin-bottom: 15px;">
+        <strong>Model Status:</strong>
+        <span x-show="modelStatus.loaded" style="color: green;">✅ Loaded</span>
+        <span x-show="!modelStatus.loaded" style="color: red;">❌ Not Loaded</span>
+        <span x-show="modelStatus.loaded" x-text="'(Accuracy: ' + modelStatus.accuracy + ')'"></span>
+        <button @click="reloadModel" :disabled="reloadingModel" style="margin-left: 10px;">
+          <span x-show="!reloadingModel">🔄 Reload Model</span>
+          <span x-show="reloadingModel">Reloading...</span>
+        </button>
+      </div>
+
+      <!-- Instructions -->
+      <div x-show="modelStatus.loaded" style="margin-bottom: 15px;">
+        <strong>Instructions:</strong>
+        <ol style="margin: 5px 0; padding-left: 20px;">
+          <li>Navigate to one of these websites in a new tab:
+            <ul style="margin: 5px 0;">
+              <li><a href="https://cse.buet.ac.bd/moodle/" target="_blank">BUET Moodle</a></li>
+              <li><a href="https://google.com" target="_blank">Google</a></li>
+              <li><a href="https://prothomalo.com" target="_blank">Prothom Alo</a></li>
+            </ul>
+          </li>
+          <li>Come back to this tab and click "Predict Current Website"</li>
+        </ol>
+      </div>
+
+      <!-- Real-time Controls -->
+      <div class="button-group" x-show="modelStatus.loaded">
+        <button @click="predictCurrentWebsite" :disabled="predicting" style="background-color: #28a745; border-color: #28a745;">
+          <span x-show="!predicting">🎯 Predict Current Website</span>
+          <span x-show="predicting">Predicting...</span>
+        </button>
+      </div>
+
+      <!-- Prediction Results -->
+      <div x-show="predictionResult" style="margin-top: 15px; padding: 15px; background-color: white; border-radius: 5px;">
+        <h3>Prediction Result:</h3>
+        <p><strong>Predicted Website:</strong> <span x-text="predictionResult?.predicted_website" style="color: #007bff; font-weight: bold;"></span></p>
+        <p><strong>Confidence:</strong> <span x-text="(predictionResult?.confidence * 100).toFixed(1) + '%'"></span></p>
+        
+        <details style="margin-top: 10px;">
+          <summary>All Probabilities</summary>
+          <div style="margin-top: 10px;">
+            <template x-for="(prob, website) in predictionResult?.all_probabilities" :key="website">
+              <div style="display: flex; justify-content: space-between; margin: 5px 0;">
+                <span x-text="website"></span>
+                <span x-text="(prob * 100).toFixed(1) + '%'"></span>
+              </div>
+            </template>
+          </div>
+        </details>
+      </div>
     </div>
 
     <div x-show="status" role="alert" x-text="status"
