@@ -96,6 +96,58 @@ function app() {
       }
     },
 
+    // Collect advanced multi-channel trace data
+    async collectAdvancedTraceData() {
+      this.isCollecting = true;
+      this.status = "Collecting advanced multi-channel trace data...";
+      this.statusIsError = false;
+      this.showingTraces = true;
+
+      try {
+        const worker = new Worker("advanced_worker.js");
+
+        // Add timeout to prevent hanging
+        const advancedTraceData = await Promise.race([
+          new Promise((resolve) => {
+            worker.onmessage = (e) => resolve(e.data);
+            worker.postMessage("start");
+          }),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("Advanced trace collection timed out (30s)")), 30000)
+          )
+        ]);
+
+        worker.terminate();
+
+        const response = await fetch("/collect_trace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ trace: advancedTraceData }),
+        });
+
+        if (!response.ok) throw new Error("Failed to send advanced trace to backend");
+
+        const result = await response.json();
+
+        this.traceData.push(advancedTraceData);
+        this.heatmaps.push({
+          src: result.heatmap,
+          min: result.min,
+          max: result.max,
+          range: result.range,
+          samples: result.samples
+        });
+
+        this.status = "Advanced multi-channel trace collected!";
+      } catch (error) {
+        console.error("Error collecting advanced trace:", error);
+        this.status = `Error: ${error.message}`;
+        this.statusIsError = true;
+      } finally {
+        this.isCollecting = false;
+      }
+    },
+
     // Download the trace data as a JSON file
     async downloadTraces() {
       try {
@@ -181,7 +233,53 @@ function app() {
       this.statusIsError = false;
 
       try {
-        // Collect a fresh trace using the worker
+        // Collect a fresh trace using the advanced worker
+        const worker = new Worker("advanced_worker.js");
+        
+        const traceData = await Promise.race([
+          new Promise((resolve) => {
+            worker.onmessage = (e) => resolve(e.data);
+            worker.postMessage("start");
+          }),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error("Trace collection timed out (30s)")), 30000)
+          )
+        ]);
+
+        worker.terminate();
+
+        // Send trace for prediction
+        const response = await fetch("/api/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ trace: traceData }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Prediction failed");
+        }
+
+        this.predictionResult = await response.json();
+        this.status = `Prediction complete! Website: ${this.predictionResult.predicted_website}`;
+        
+      } catch (error) {
+        console.error("Error during prediction:", error);
+        this.status = `Prediction error: ${error.message}`;
+        this.statusIsError = true;
+      } finally {
+        this.predicting = false;
+      }
+    },
+
+    async predictWithLegacyMethod() {
+      this.predicting = true;
+      this.predictionResult = null;
+      this.status = "Collecting legacy side-channel trace for prediction...";
+      this.statusIsError = false;
+
+      try {
+        // Collect a fresh trace using the legacy worker
         const worker = new Worker("worker.js");
         
         const traceData = await new Promise((resolve) => {
@@ -204,11 +302,11 @@ function app() {
         }
 
         this.predictionResult = await response.json();
-        this.status = `Prediction complete! Website: ${this.predictionResult.predicted_website}`;
+        this.status = `Legacy prediction complete! Website: ${this.predictionResult.predicted_website}`;
         
       } catch (error) {
-        console.error("Error during prediction:", error);
-        this.status = `Prediction error: ${error.message}`;
+        console.error("Error during legacy prediction:", error);
+        this.status = `Legacy prediction error: ${error.message}`;
         this.statusIsError = true;
       } finally {
         this.predicting = false;

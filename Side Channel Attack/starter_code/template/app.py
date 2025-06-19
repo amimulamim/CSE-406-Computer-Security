@@ -9,6 +9,7 @@ from datetime import datetime
 import glob
 from train import ComplexFingerprintClassifier, INPUT_SIZE, HIDDEN_SIZE, MODELS_DIR
 from collect import WEBSITES
+from advanced_data_converter import AdvancedDataConverter
 
 app = Flask(__name__)
 
@@ -16,7 +17,7 @@ app = Flask(__name__)
 HEATMAP_DIR = os.path.join("static", "heatmaps")
 os.makedirs(HEATMAP_DIR, exist_ok=True)
 
-# Global variables for model
+# Global variables for model and data conversion
 loaded_model = None
 model_info = {
     "loaded": False,
@@ -24,6 +25,7 @@ model_info = {
     "loaded_at": None,
     "accuracy": None
 }
+advanced_converter = AdvancedDataConverter(input_size=INPUT_SIZE)
 
 def load_latest_model():
     """Load the latest complex fingerprint classifier model"""
@@ -100,15 +102,31 @@ def collect_trace():
     try:
         data = request.get_json()
         trace = data.get('trace')
-        print("Received trace:", trace[:10], "...", len(trace), "samples")
-
-
-        if not trace or not isinstance(trace, list):
-            return jsonify({"error": "Invalid trace data"}), 400
+        
+        # Check if this is advanced trace data (dict with attacks) or simple trace data (list)
+        if isinstance(trace, dict) and 'attacks' in trace:
+            print("Received advanced trace data with attacks:", list(trace.get('attacks', {}).keys()))
+            
+            # Convert advanced trace to feature vector using AdvancedDataConverter
+            try:
+                feature_vector = advanced_converter.convert_advanced_trace(trace)
+                trace_array = feature_vector.reshape(1, -1)
+                print(f"Converted to feature vector of size: {feature_vector.shape}")
+                print(f"Feature vector range: min={np.min(feature_vector):.2f}, max={np.max(feature_vector):.2f}")
+            except Exception as e:
+                print(f"Error converting advanced trace: {e}")
+                return jsonify({"error": f"Failed to convert advanced trace: {str(e)}"}), 400
+                
+        elif isinstance(trace, list):
+            print("Received simple trace:", len(trace), "samples")
+            if not trace:
+                return jsonify({"error": "Empty trace data"}), 400
+            trace_array = np.array(trace).reshape(1, -1)
+            
+        else:
+            return jsonify({"error": "Invalid trace data format"}), 400
 
         stored_traces.append(trace)
-
-        trace_array = np.array(trace).reshape(1, -1)
 
         # Calculate metadata
         min_val = int(np.min(trace_array))
@@ -120,8 +138,6 @@ def collect_trace():
         filepath = os.path.join(HEATMAP_DIR, filename)
 
         # Generate heatmap
-
-
         fig, ax = plt.subplots(figsize=(24, 2))  # Wider figure
         ax.imshow(trace_array, cmap='plasma', aspect='auto')
         ax.axis('off')
@@ -129,9 +145,6 @@ def collect_trace():
         # Save without tight layout cropping
         plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
         plt.savefig(filepath, dpi=200, bbox_inches='tight', pad_inches=0.01)
-
-
-
 
         plt.close(fig)
 
@@ -205,13 +218,25 @@ def predict_website():
         data = request.get_json()
         trace = data.get('trace')
         
-        if not trace or not isinstance(trace, list):
-            return jsonify({"error": "Invalid trace data"}), 400
-        
-        # Preprocess trace
-        processed_trace = preprocess_trace(trace)
-        if processed_trace is None:
-            return jsonify({"error": f"Trace must be exactly {INPUT_SIZE} samples"}), 400
+        # Handle both simple traces and advanced traces
+        if isinstance(trace, dict) and 'attacks' in trace:
+            print("Received advanced trace for prediction")
+            # Convert advanced trace to feature vector
+            try:
+                processed_trace = advanced_converter.convert_advanced_trace(trace)
+                print(f"Converted advanced trace to feature vector of size: {processed_trace.shape}")
+            except Exception as e:
+                print(f"Error converting advanced trace for prediction: {e}")
+                return jsonify({"error": f"Failed to convert advanced trace: {str(e)}"}), 400
+                
+        elif isinstance(trace, list):
+            print("Received simple trace for prediction")
+            # Preprocess simple trace
+            processed_trace = preprocess_trace(trace)
+            if processed_trace is None:
+                return jsonify({"error": f"Trace must be exactly {INPUT_SIZE} samples"}), 400
+        else:
+            return jsonify({"error": "Invalid trace data format"}), 400
         
         # Make prediction
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -193,7 +193,8 @@
 
       <div class="button-group">
         <button @click="collectLatencyData()" :disabled="isCollecting">Collect Latency Data</button>
-        <button @click="collectTraceData()" :disabled="isCollecting">Collect Trace</button>
+        <button @click="collectTraceData()" :disabled="isCollecting">Collect Trace (Legacy)</button>
+        <button @click="collectAdvancedTraceData()" :disabled="isCollecting" style="background-color: #28a745;">🚀 Collect Advanced Trace</button>
         <button @click="downloadTraces()">Download Traces</button>
         <button @click="clearResults()">Clear Results</button>
       </div>
@@ -279,10 +280,15 @@
         </ol>
       </div>
 
-      <!-- Prediction Button -->
+      <!-- Prediction Buttons -->
       <div x-show="modelStatus.loaded">
-        <button @click="predictCurrentWebsite" :disabled="predicting" style="width: 100%; background-color: #28a745; border-color: #28a745; font-weight: bold;">
-          <span x-show="!predicting">🎯 Predict Current Website</span>
+        <button @click="predictCurrentWebsite" :disabled="predicting" style="width: 100%; background-color: #28a745; border-color: #28a745; font-weight: bold; margin-bottom: 10px;">
+          <span x-show="!predicting">🎯 Predict with Advanced Techniques</span>
+          <span x-show="predicting">Predicting...</span>
+        </button>
+        
+        <button @click="predictWithLegacyMethod" :disabled="predicting" style="width: 100%; background-color: #6c757d; border-color: #6c757d;">
+          <span x-show="!predicting">📊 Predict with Legacy Method</span>
           <span x-show="predicting">Predicting...</span>
         </button>
       </div>
