@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedShuffleSplit
 
 # Configuration
-DATASET_PATH = "Datasets/converted_dataset.json"
+DATASET_PATH = "Datasets/dataset.json"
 MODELS_DIR = "saved_models"
 BATCH_SIZE = 64
 EPOCHS = 50  
@@ -28,13 +28,23 @@ class TraceDataset(Dataset):
         self.samples = []
         self.labels = []
         self.website_names = []
-
-        for i, site in enumerate(raw):
-            self.website_names.append(site["website"])
-            for trace in site["traces"]:
-                if len(trace) == INPUT_SIZE:
-                    self.samples.append(trace)
-                    self.labels.append(i)
+        
+        # Build unique website list and mapping
+        website_to_index = {}
+        for item in raw:
+            website = item["website"]
+            if website not in website_to_index:
+                website_to_index[website] = len(self.website_names)
+                self.website_names.append(website)
+        
+        # Process each trace entry
+        for item in raw:
+            website = item["website"]
+            trace_data = item["trace_data"]
+            
+            if len(trace_data) == INPUT_SIZE:
+                self.samples.append(trace_data)
+                self.labels.append(website_to_index[website])
 
         self.samples = np.array(self.samples, dtype=np.float32)
         self.labels = np.array(self.labels, dtype=np.int64)
