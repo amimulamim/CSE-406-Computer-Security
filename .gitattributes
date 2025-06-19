@@ -1,0 +1,4 @@
+Side[[:space:]]Channel[[:space:]]Attack/starter_code/template/Datasets/to_merge/dataset_2005001.json filter=lfs diff=lfs merge=lfs -text
+Side[[:space:]]Channel[[:space:]]Attack/starter_code/template/Datasets/dataset_merged.json filter=lfs diff=lfs merge=lfs -text
+Side[[:space:]]Channel[[:space:]]Attack/starter_code/template/**/*.pth filter=lfs diff=lfs merge=lfs -text
+Side[[:space:]]Channel[[:space:]]Attack/starter_code/template/**/*.db filter=lfs diff=lfs merge=lfs -text
