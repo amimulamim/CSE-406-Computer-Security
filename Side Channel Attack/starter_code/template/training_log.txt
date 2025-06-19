@@ -1,0 +1,16 @@
+📂 Loading dataset from: Datasets/dataset.json
+✅ Loaded 5565 traces from 3 websites
+
+📶 Training baseline FingerprintClassifier...
+Epoch 1/50 | Train Acc: 0.7047 | Test Acc: 0.7647
+🧠 Saved model with accuracy: 0.7647
+Epoch 2/50 | Train Acc: 0.7899 | Test Acc: 0.7454
+Epoch 3/50 | Train Acc: 0.8175 | Test Acc: 0.7858
+🧠 Saved model with accuracy: 0.7858
+Epoch 4/50 | Train Acc: 0.8401 | Test Acc: 0.7675
+Epoch 5/50 | Train Acc: 0.8671 | Test Acc: 0.7711
+Epoch 6/50 | Train Acc: 0.8863 | Test Acc: 0.7914
+🧠 Saved model with accuracy: 0.7914
+Epoch 7/50 | Train Acc: 0.9135 | Test Acc: 0.7886
+Epoch 8/50 | Train Acc: 0.9246 | Test Acc: 0.7803
+Epoch 9/50 | Train Acc: 0.9375 | Test Acc: 0.7840
