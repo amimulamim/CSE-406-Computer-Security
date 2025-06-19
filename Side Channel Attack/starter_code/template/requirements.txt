@@ -1,20 +1,25 @@
 # Web framework
 Flask==2.3.3
 
-# Web server for deployment
-gunicorn==21.2.0
+# Core numerical & plotting
+numpy==1.24.4
+matplotlib==3.7.2
 
-# Core numerical & plotting (needed for heatmap generation)
-numpy==1.26.4
-matplotlib==3.9.2
+# Browser automation
+selenium==4.15.0
+webdriver-manager==4.0.1
 
-# PyTorch CPU-only (MUCH smaller - ~150MB instead of 5-6GB)
---index-url https://download.pytorch.org/whl/cpu
-torch==2.5.1
+# Inference engine – CPU-only PyTorch wheel
+# swap this in place of “torch>=2.0.0”
+# adjust version to match your training/runtime
+torch==2.0.1+cpu
+
+# PyPI source for the CPU wheels
+-f https://download.pytorch.org/whl/cpu/torch_stable.html
 
 # ML utilities
-scikit-learn==1.4.2
-tqdm==4.66.4
+scikit-learn>=1.0.0
+tqdm
 
 # Database ORM
-SQLAlchemy==2.0.30
+SQLAlchemy>=2.0.0
