@@ -196,6 +196,20 @@ def train_advanced_models(dataset: AdvancedTraceDataset, args):
     
     # Model configurations for advanced training
     model_configs = {
+        'baseline': {
+            'class': FingerprintClassifier,
+            'lr': 0.001,
+            'epochs': args.epochs,
+            'train_func': train_advanced,
+            'description': 'Basic CNN classifier'
+        },
+        'complex': {
+            'class': ComplexFingerprintClassifier,
+            'lr': 0.001,
+            'epochs': args.epochs,
+            'train_func': train_advanced,
+            'description': 'Enhanced CNN with BatchNorm'
+        },
         'ensemble': {
             'class': EnsembleClassifier,
             'lr': 0.0001,
@@ -223,13 +237,6 @@ def train_advanced_models(dataset: AdvancedTraceDataset, args):
             'epochs': args.epochs,
             'train_func': train_advanced,
             'description': 'Deep residual connections'
-        },
-        'complex': {
-            'class': ComplexFingerprintClassifier,
-            'lr': 0.001,
-            'epochs': args.epochs,
-            'train_func': train_advanced,
-            'description': 'Enhanced CNN with BatchNorm'
         }
     }
     
@@ -268,9 +275,18 @@ def train_advanced_models(dataset: AdvancedTraceDataset, args):
             training_time = (datetime.now() - start_time).total_seconds()
             
         else:  # train_advanced
-            _, train_losses, train_accs, test_accs = train_advanced(
+            # Configure early stopping (default: OFF)
+            enable_early_stopping = args.early_stopping
+            patience = args.early_stopping_patience
+            
+            if not enable_early_stopping:
+                print("⚠️  Early stopping disabled - training for full epochs (default)")
+            else:
+                print(f"📊 Early stopping enabled (patience: {patience})")
+            
+            _, train_losses, train_accs, test_accs = train_advanced_custom(
                 model, train_loader, test_loader, criterion, optimizer,
-                config['epochs'], save_path
+                config['epochs'], save_path, enable_early_stopping, patience
             )
             
             training_time = (datetime.now() - start_time).total_seconds()
@@ -308,12 +324,110 @@ def train_advanced_models(dataset: AdvancedTraceDataset, args):
     
     return results
 
+def train_advanced_custom(model, train_loader, test_loader, criterion, optimizer, epochs, model_save_path, enable_early_stopping=True, patience=10):
+    """Custom training function with configurable early stopping"""
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+
+    # Learning rate scheduler
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', patience=5, factor=0.5, verbose=True)
+    
+    # Early stopping settings
+    best_accuracy = 0.0
+    patience_counter = 0
+    
+    # Training history
+    train_losses = []
+    train_accuracies = []
+    test_accuracies = []
+    
+    for epoch in range(epochs):
+        model.train()
+        correct, total, epoch_train_loss = 0, 0, 0.0
+
+        for traces, labels in train_loader:
+            traces, labels = traces.to(device), labels.to(device)
+            
+            # Data augmentation: Add small random noise
+            if model.training:
+                noise = torch.randn_like(traces) * 0.01
+                traces = traces + noise
+            
+            optimizer.zero_grad()
+            
+            # Handle different model types
+            if isinstance(model, AdversarialFingerprintClassifier):
+                website_outputs, domain_outputs = model(traces)
+                loss = criterion(website_outputs, labels)
+                outputs = website_outputs
+            else:
+                outputs = model(traces)
+                loss = criterion(outputs, labels)
+            
+            loss.backward()
+            optimizer.step()
+
+            epoch_train_loss += loss.item()
+            predicted = outputs.argmax(1)
+            total += labels.size(0)
+            correct += predicted.eq(labels).sum().item()
+
+        train_accuracy = 100. * correct / total
+        avg_train_loss = epoch_train_loss / len(train_loader)
+        
+        # Test evaluation
+        model.eval()
+        test_correct, test_total = 0, 0
+        with torch.no_grad():
+            for traces, labels in test_loader:
+                traces, labels = traces.to(device), labels.to(device)
+                if isinstance(model, AdversarialFingerprintClassifier):
+                    outputs, _ = model(traces)
+                else:
+                    outputs = model(traces)
+                predicted = outputs.argmax(1)
+                test_total += labels.size(0)
+                test_correct += predicted.eq(labels).sum().item()
+        
+        test_accuracy = 100. * test_correct / test_total
+        
+        # Record metrics
+        train_losses.append(avg_train_loss)
+        train_accuracies.append(train_accuracy)
+        test_accuracies.append(test_accuracy)
+        
+        print(f"Epoch {epoch+1}/{epochs} | Train Acc: {train_accuracy:.4f} | Test Acc: {test_accuracy:.4f}")
+        
+        # Save best model
+        if test_accuracy > best_accuracy:
+            best_accuracy = test_accuracy
+            torch.save({
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'accuracy': test_accuracy,
+                'epoch': epoch
+            }, model_save_path)
+            print(f"🧠 Saved model with accuracy: {test_accuracy:.4f}")
+            patience_counter = 0
+        else:
+            patience_counter += 1
+        
+        # Learning rate scheduling
+        scheduler.step(test_accuracy)
+        
+        # Early stopping check
+        if enable_early_stopping and patience_counter >= patience:
+            print(f"⏹️  Early stopping triggered after {epoch+1} epochs (patience: {patience})")
+            break
+    
+    return model, train_losses, train_accuracies, test_accuracies
+
 def main():
     parser = argparse.ArgumentParser(description='Advanced Side-Channel Model Training')
     parser.add_argument('--dataset', '-d', type=str, default='Datasets/advanced_dataset.json',
                        help='Path to advanced dataset JSON file')
     parser.add_argument('--models', '-m', nargs='+', default=['all'],
-                       choices=['all', 'ensemble', 'adversarial', 'attention', 'residual', 'complex'],
+                       choices=['all', 'baseline', 'complex', 'ensemble', 'adversarial', 'attention', 'residual'],
                        help='Models to train')
     parser.add_argument('--epochs', '-e', type=int, default=50,
                        help='Training epochs')
@@ -321,6 +435,10 @@ def main():
                        help='Minimum samples per website class')
     parser.add_argument('--analyze-only', action='store_true',
                        help='Only analyze dataset, skip training')
+    parser.add_argument('--early-stopping', action='store_true',
+                       help='Enable early stopping (default: disabled)')
+    parser.add_argument('--early-stopping-patience', type=int, default=10,
+                       help='Early stopping patience (epochs to wait for improvement)')
     
     args = parser.parse_args()
     
