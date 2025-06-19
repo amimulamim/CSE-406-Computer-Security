@@ -3,6 +3,8 @@ version: '3.8'
 services:
   flask-app:
     build: .
+    image: amimulamim/side-channel-attack:latest
+
     ports:
       - "5000:5000"
     environment:
