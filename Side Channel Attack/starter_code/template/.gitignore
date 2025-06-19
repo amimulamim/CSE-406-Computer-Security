@@ -11,3 +11,5 @@ __pycache__/
 *.env
 *.DS_Store
 # Ignore Jupyter Notebook checkpoints
+
+static/heatmaps/
