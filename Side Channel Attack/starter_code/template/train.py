@@ -214,8 +214,9 @@ def main():
     splitter = StratifiedShuffleSplit(n_splits=1, train_size=TRAIN_SPLIT, random_state=42)
     train_idx, test_idx = next(splitter.split(dataset.samples, dataset.labels))
 
-    train_loader = DataLoader(Subset(dataset, train_idx), batch_size=BATCH_SIZE, shuffle=True)
-    test_loader = DataLoader(Subset(dataset, test_idx), batch_size=BATCH_SIZE)
+    # Use drop_last=True to prevent BatchNorm issues with single-sample batches
+    train_loader = DataLoader(Subset(dataset, train_idx), batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
+    test_loader = DataLoader(Subset(dataset, test_idx), batch_size=BATCH_SIZE, drop_last=True)
 
     print("\n📶 Training baseline FingerprintClassifier...")
     model = FingerprintClassifier(INPUT_SIZE, HIDDEN_SIZE, num_classes=len(dataset.website_names))
