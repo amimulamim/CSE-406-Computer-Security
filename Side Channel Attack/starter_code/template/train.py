@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 import numpy as np
 import torch
 import torch.nn as nn
@@ -9,7 +10,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedShuffleSplit
 
 # Configuration
-DATASET_PATH = "Datasets/dataset.json"
+DEFAULT_DATASET_PATH = "Datasets/dataset.json"
 MODELS_DIR = "saved_models"
 BATCH_SIZE = 64
 EPOCHS = 50  
@@ -203,8 +204,11 @@ def evaluate(model, test_loader, website_names):
     return all_preds, all_labels
 
 def main():
-    print("📂 Loading dataset...")
-    dataset = TraceDataset(DATASET_PATH)
+    # Get dataset path from command line argument or use default
+    dataset_path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_DATASET_PATH
+    
+    print(f"📂 Loading dataset from: {dataset_path}")
+    dataset = TraceDataset(dataset_path)
     print(f"✅ Loaded {len(dataset)} traces from {len(dataset.website_names)} websites")
 
     splitter = StratifiedShuffleSplit(n_splits=1, train_size=TRAIN_SPLIT, random_state=42)
@@ -233,4 +237,10 @@ def main():
     evaluate(model2, test_loader, dataset.website_names)
 
 if __name__ == "__main__":
+    if len(sys.argv) > 2:
+        print(f"Usage: {sys.argv[0]} [dataset_path]")
+        print(f"Example: {sys.argv[0]} Datasets/dataset_merged.json")
+        print(f"Default dataset: {DEFAULT_DATASET_PATH}")
+        sys.exit(1)
+    
     main()
