@@ -1,9 +1,25 @@
-flask==2.3.3
-matplotlib==3.7.2
+# Web framework
+Flask==2.3.3
+
+# Core numerical & plotting
 numpy==1.24.4
+matplotlib==3.7.2
+
+# Browser automation
 selenium==4.15.0
 webdriver-manager==4.0.1
-torch>=2.0.0
+
+# Inference engine – CPU-only PyTorch wheel
+# swap this in place of “torch>=2.0.0”
+# adjust version to match your training/runtime
+torch==2.0.1+cpu
+
+# PyPI source for the CPU wheels
+-f https://download.pytorch.org/whl/cpu/torch_stable.html
+
+# ML utilities
 scikit-learn>=1.0.0
-sqlalchemy>=2.0.0
 tqdm
+
+# Database ORM
+SQLAlchemy>=2.0.0
