@@ -1,0 +1,28 @@
+# Web framework
+Flask>=2.3.0
+
+# Web server for deployment
+gunicorn>=21.0.0
+
+# Core numerical & plotting (Python 3.13 compatible)  
+numpy>=1.26.0
+matplotlib>=3.8.0
+
+# Browser automation
+selenium>=4.15.0
+webdriver-manager>=4.0.0
+
+# Inference engine – PyTorch (Python 3.13 compatible)
+torch>=2.5.0
+torchvision>=0.20.0
+
+# ML utilities
+scikit-learn>=1.4.0
+tqdm>=4.65.0
+
+# Database ORM
+SQLAlchemy>=2.0.0
+
+# Build dependencies
+setuptools>=70.0.0
+wheel>=0.42.0

@@ -1,0 +1,33 @@
+# Minimal requirements for CPU-only deployment
+# Total install size: ~200-300MB instead of 5-6GB
+
+# Web framework
+Flask==2.3.3
+
+# Web server for production
+gunicorn==21.2.0
+
+# Core numerical computing (optimized for smaller size)
+numpy==1.26.4
+
+# Plotting (optional - can be removed if not needed in production)
+matplotlib==3.9.2
+
+# Browser automation (if needed for data collection)
+selenium==4.15.0
+webdriver-manager==4.0.1
+
+# PyTorch CPU-only - MUCH smaller than GPU version
+--index-url https://download.pytorch.org/whl/cpu
+torch==2.5.1
+
+# Lightweight ML utilities
+scikit-learn==1.4.2
+tqdm==4.66.4
+
+# Database
+SQLAlchemy==2.0.30
+
+# Build tools
+setuptools==69.5.1
+wheel==0.43.0
