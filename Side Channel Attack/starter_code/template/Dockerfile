@@ -28,5 +28,5 @@ EXPOSE 5000
 ENV PYTHONUNBUFFERED=1
 ENV PORT=5000
 
-# Run the application
-CMD ["python", "app.py"]
+# Default command runs the Flask app, but can be overridden
+CMD ["python3", "app.py"]
