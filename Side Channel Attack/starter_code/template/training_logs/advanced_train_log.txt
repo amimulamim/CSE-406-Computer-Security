@@ -545,7 +545,7 @@ https://cse.buet.ac.bd/moodle/       0.76      0.63      0.69        30
 📊 Model Performance Summary:
    🧠 baseline    : 76.0417 (28.2s)
    🧠 complex     : 75.0000 (76.7s)
-   🧠 ensemble    : 0.7812 (89.4s)
+   🧠 ensemble    : 78.1200 (89.4s)
    🧠 adversarial : 73.9583 (18.3s)
    🧠 attention   : 75.0000 (19.3s)
    🧠 residual    : 75.0000 (23.1s)
@@ -554,4 +554,4 @@ https://cse.buet.ac.bd/moodle/       0.76      0.63      0.69        30
 📈 Analysis plots in: analysis/
 
 🚀 Training successful! Best model accuracies:
-🏆 Champion: baseline (76.0417)
+🏆 Champion: ensemble (78.1200)
