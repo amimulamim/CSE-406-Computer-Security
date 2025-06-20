@@ -1,0 +1,557 @@
+📂 Loading advanced dataset from: Datasets/advanced_dataset.json
+📊 Raw data entries: 600
+📈 Website sample counts:
+  ✅ https://cse.buet.ac.bd/moodle/: 200 samples
+  ✅ https://google.com: 200 samples
+  ✅ https://prothomalo.com: 200 samples
+✅ Dataset loaded successfully:
+   📊 Total samples: 600
+   🌐 Websites: 3
+   📏 Feature size: 1000
+   🎯 Classes: ['https://cse.buet.ac.bd/moodle/', 'https://google.com', 'https://prothomalo.com']
+
+📊 Dataset Analysis
+==================================================
+🎯 Class Distribution:
+   https://cse.buet.ac.bd/moodle/: 200 samples
+   https://google.com: 200 samples
+   https://prothomalo.com: 200 samples
+
+📈 Feature Statistics:
+   Min value: -7.591
+   Max value: 1861.646
+   Mean: 11.248
+   Std: 72.202
+📊 Analysis plot saved: analysis/advanced_dataset_analysis.png
+
+🚀 Advanced Model Training
+==================================================
+🎯 Training set: 480 samples
+🎯 Test set: 120 samples
+🎯 Batch size: 48
+🎯 Training models: ['baseline', 'complex', 'ensemble', 'adversarial', 'attention', 'residual']
+
+🧠 Training BASELINE Model
+📋 Basic CNN classifier
+----------------------------------------
+⚠️  Early stopping disabled - training for full epochs (default)
+Epoch 1/50 | Train Acc: 36.2500 | Test Acc: 34.3750
+🧠 Saved model with accuracy: 34.3750
+Epoch 2/50 | Train Acc: 37.7083 | Test Acc: 40.6250
+🧠 Saved model with accuracy: 40.6250
+Epoch 3/50 | Train Acc: 40.4167 | Test Acc: 41.6667
+🧠 Saved model with accuracy: 41.6667
+Epoch 4/50 | Train Acc: 52.2917 | Test Acc: 58.3333
+🧠 Saved model with accuracy: 58.3333
+Epoch 5/50 | Train Acc: 60.2083 | Test Acc: 62.5000
+🧠 Saved model with accuracy: 62.5000
+Epoch 6/50 | Train Acc: 61.2500 | Test Acc: 66.6667
+🧠 Saved model with accuracy: 66.6667
+Epoch 7/50 | Train Acc: 68.5417 | Test Acc: 64.5833
+Epoch 8/50 | Train Acc: 65.4167 | Test Acc: 67.7083
+🧠 Saved model with accuracy: 67.7083
+Epoch 9/50 | Train Acc: 68.3333 | Test Acc: 67.7083
+Epoch 10/50 | Train Acc: 69.3750 | Test Acc: 69.7917
+🧠 Saved model with accuracy: 69.7917
+Epoch 11/50 | Train Acc: 68.7500 | Test Acc: 68.7500
+Epoch 12/50 | Train Acc: 68.7500 | Test Acc: 68.7500
+Epoch 13/50 | Train Acc: 68.5417 | Test Acc: 67.7083
+Epoch 14/50 | Train Acc: 69.7917 | Test Acc: 70.8333
+🧠 Saved model with accuracy: 70.8333
+Epoch 15/50 | Train Acc: 68.7500 | Test Acc: 67.7083
+Epoch 16/50 | Train Acc: 67.2917 | Test Acc: 69.7917
+Epoch 17/50 | Train Acc: 69.3750 | Test Acc: 71.8750
+🧠 Saved model with accuracy: 71.8750
+Epoch 18/50 | Train Acc: 70.8333 | Test Acc: 69.7917
+Epoch 19/50 | Train Acc: 68.3333 | Test Acc: 70.8333
+Epoch 20/50 | Train Acc: 71.0417 | Test Acc: 70.8333
+Epoch 21/50 | Train Acc: 70.8333 | Test Acc: 70.8333
+Epoch 22/50 | Train Acc: 70.0000 | Test Acc: 70.8333
+Epoch 23/50 | Train Acc: 71.2500 | Test Acc: 71.8750
+Epoch 00023: reducing learning rate of group 0 to 5.0000e-04.
+Epoch 24/50 | Train Acc: 72.5000 | Test Acc: 70.8333
+Epoch 25/50 | Train Acc: 73.5417 | Test Acc: 70.8333
+Epoch 26/50 | Train Acc: 73.5417 | Test Acc: 71.8750
+Epoch 27/50 | Train Acc: 72.0833 | Test Acc: 71.8750
+Epoch 28/50 | Train Acc: 71.8750 | Test Acc: 73.9583
+🧠 Saved model with accuracy: 73.9583
+Epoch 29/50 | Train Acc: 72.2917 | Test Acc: 71.8750
+Epoch 30/50 | Train Acc: 71.4583 | Test Acc: 71.8750
+Epoch 31/50 | Train Acc: 74.3750 | Test Acc: 71.8750
+Epoch 32/50 | Train Acc: 73.5417 | Test Acc: 72.9167
+Epoch 33/50 | Train Acc: 74.3750 | Test Acc: 71.8750
+Epoch 34/50 | Train Acc: 72.7083 | Test Acc: 73.9583
+Epoch 00034: reducing learning rate of group 0 to 2.5000e-04.
+Epoch 35/50 | Train Acc: 74.7917 | Test Acc: 73.9583
+Epoch 36/50 | Train Acc: 73.3333 | Test Acc: 72.9167
+Epoch 37/50 | Train Acc: 72.7083 | Test Acc: 72.9167
+Epoch 38/50 | Train Acc: 74.7917 | Test Acc: 73.9583
+Epoch 39/50 | Train Acc: 75.2083 | Test Acc: 71.8750
+Epoch 40/50 | Train Acc: 75.2083 | Test Acc: 72.9167
+Epoch 00040: reducing learning rate of group 0 to 1.2500e-04.
+Epoch 41/50 | Train Acc: 76.0417 | Test Acc: 75.0000
+🧠 Saved model with accuracy: 75.0000
+Epoch 42/50 | Train Acc: 74.7917 | Test Acc: 72.9167
+Epoch 43/50 | Train Acc: 75.4167 | Test Acc: 75.0000
+Epoch 44/50 | Train Acc: 75.8333 | Test Acc: 75.0000
+Epoch 45/50 | Train Acc: 76.6667 | Test Acc: 75.0000
+Epoch 46/50 | Train Acc: 77.7083 | Test Acc: 75.0000
+Epoch 47/50 | Train Acc: 75.8333 | Test Acc: 75.0000
+Epoch 00047: reducing learning rate of group 0 to 6.2500e-05.
+Epoch 48/50 | Train Acc: 75.2083 | Test Acc: 73.9583
+Epoch 49/50 | Train Acc: 75.6250 | Test Acc: 76.0417
+🧠 Saved model with accuracy: 76.0417
+Epoch 50/50 | Train Acc: 75.8333 | Test Acc: 75.0000
+📊 Training history saved to analysis/advanced_baseline_training.png
+
+📊 BASELINE Model Evaluation:
+
+📊 Classification Report:
+                                precision    recall  f1-score   support
+
+https://cse.buet.ac.bd/moodle/       0.83      0.63      0.72        30
+            https://google.com       0.73      0.73      0.73        33
+        https://prothomalo.com       0.75      0.91      0.82        33
+
+                      accuracy                           0.76        96
+                     macro avg       0.77      0.76      0.76        96
+                  weighted avg       0.77      0.76      0.76        96
+
+⏱️  Training time: 28.2s
+🎯 Best accuracy: 76.0417
+
+🧠 Training COMPLEX Model
+📋 Enhanced CNN with BatchNorm
+----------------------------------------
+⚠️  Early stopping disabled - training for full epochs (default)
+Epoch 1/50 | Train Acc: 62.2917 | Test Acc: 66.6667
+🧠 Saved model with accuracy: 66.6667
+Epoch 2/50 | Train Acc: 67.7083 | Test Acc: 68.7500
+🧠 Saved model with accuracy: 68.7500
+Epoch 3/50 | Train Acc: 71.8750 | Test Acc: 75.0000
+🧠 Saved model with accuracy: 75.0000
+Epoch 4/50 | Train Acc: 72.7083 | Test Acc: 68.7500
+Epoch 5/50 | Train Acc: 76.6667 | Test Acc: 72.9167
+Epoch 6/50 | Train Acc: 79.5833 | Test Acc: 65.6250
+Epoch 7/50 | Train Acc: 77.9167 | Test Acc: 65.6250
+Epoch 8/50 | Train Acc: 83.5417 | Test Acc: 73.9583
+Epoch 9/50 | Train Acc: 83.5417 | Test Acc: 75.0000
+Epoch 00009: reducing learning rate of group 0 to 5.0000e-04.
+Epoch 10/50 | Train Acc: 84.3750 | Test Acc: 66.6667
+Epoch 11/50 | Train Acc: 85.6250 | Test Acc: 71.8750
+Epoch 12/50 | Train Acc: 89.1667 | Test Acc: 68.7500
+Epoch 13/50 | Train Acc: 89.5833 | Test Acc: 68.7500
+Epoch 14/50 | Train Acc: 88.9583 | Test Acc: 68.7500
+Epoch 15/50 | Train Acc: 91.0417 | Test Acc: 68.7500
+Epoch 00015: reducing learning rate of group 0 to 2.5000e-04.
+Epoch 16/50 | Train Acc: 90.2083 | Test Acc: 70.8333
+Epoch 17/50 | Train Acc: 92.7083 | Test Acc: 71.8750
+Epoch 18/50 | Train Acc: 93.7500 | Test Acc: 71.8750
+Epoch 19/50 | Train Acc: 95.0000 | Test Acc: 71.8750
+Epoch 20/50 | Train Acc: 95.4167 | Test Acc: 73.9583
+Epoch 21/50 | Train Acc: 95.2083 | Test Acc: 72.9167
+Epoch 00021: reducing learning rate of group 0 to 1.2500e-04.
+Epoch 22/50 | Train Acc: 94.5833 | Test Acc: 71.8750
+Epoch 23/50 | Train Acc: 96.6667 | Test Acc: 73.9583
+Epoch 24/50 | Train Acc: 96.6667 | Test Acc: 71.8750
+Epoch 25/50 | Train Acc: 95.6250 | Test Acc: 71.8750
+Epoch 26/50 | Train Acc: 96.2500 | Test Acc: 70.8333
+Epoch 27/50 | Train Acc: 96.6667 | Test Acc: 73.9583
+Epoch 00027: reducing learning rate of group 0 to 6.2500e-05.
+Epoch 28/50 | Train Acc: 97.0833 | Test Acc: 70.8333
+Epoch 29/50 | Train Acc: 96.8750 | Test Acc: 70.8333
+Epoch 30/50 | Train Acc: 97.7083 | Test Acc: 69.7917
+Epoch 31/50 | Train Acc: 96.6667 | Test Acc: 67.7083
+Epoch 32/50 | Train Acc: 97.5000 | Test Acc: 67.7083
+Epoch 33/50 | Train Acc: 97.2917 | Test Acc: 69.7917
+Epoch 00033: reducing learning rate of group 0 to 3.1250e-05.
+Epoch 34/50 | Train Acc: 97.5000 | Test Acc: 68.7500
+Epoch 35/50 | Train Acc: 98.5417 | Test Acc: 68.7500
+Epoch 36/50 | Train Acc: 98.3333 | Test Acc: 69.7917
+Epoch 37/50 | Train Acc: 97.5000 | Test Acc: 67.7083
+Epoch 38/50 | Train Acc: 97.2917 | Test Acc: 67.7083
+Epoch 39/50 | Train Acc: 97.9167 | Test Acc: 67.7083
+Epoch 00039: reducing learning rate of group 0 to 1.5625e-05.
+Epoch 40/50 | Train Acc: 98.1250 | Test Acc: 68.7500
+Epoch 41/50 | Train Acc: 97.7083 | Test Acc: 67.7083
+Epoch 42/50 | Train Acc: 97.7083 | Test Acc: 67.7083
+Epoch 43/50 | Train Acc: 98.3333 | Test Acc: 68.7500
+Epoch 44/50 | Train Acc: 97.5000 | Test Acc: 68.7500
+Epoch 45/50 | Train Acc: 98.3333 | Test Acc: 68.7500
+Epoch 00045: reducing learning rate of group 0 to 7.8125e-06.
+Epoch 46/50 | Train Acc: 97.7083 | Test Acc: 67.7083
+Epoch 47/50 | Train Acc: 97.9167 | Test Acc: 68.7500
+Epoch 48/50 | Train Acc: 98.1250 | Test Acc: 67.7083
+Epoch 49/50 | Train Acc: 97.7083 | Test Acc: 68.7500
+Epoch 50/50 | Train Acc: 96.6667 | Test Acc: 68.7500
+📊 Training history saved to analysis/advanced_complex_training.png
+
+📊 COMPLEX Model Evaluation:
+
+📊 Classification Report:
+                                precision    recall  f1-score   support
+
+https://cse.buet.ac.bd/moodle/       0.76      0.63      0.69        30
+            https://google.com       0.71      0.67      0.69        33
+        https://prothomalo.com       0.78      0.94      0.85        33
+
+                      accuracy                           0.75        96
+                     macro avg       0.75      0.75      0.74        96
+                  weighted avg       0.75      0.75      0.74        96
+
+⏱️  Training time: 76.7s
+🎯 Best accuracy: 75.0000
+
+🧠 Training ENSEMBLE Model
+📋 Advanced Ensemble with MixUp augmentation
+----------------------------------------
+Epoch 1/50 | Train Acc: 0.3708 | Test Acc: 0.4583
+🧠 Saved MixUp model with accuracy: 0.4583
+Epoch 2/50 | Train Acc: 0.4062 | Test Acc: 0.5729
+🧠 Saved MixUp model with accuracy: 0.5729
+Epoch 3/50 | Train Acc: 0.5521 | Test Acc: 0.6250
+🧠 Saved MixUp model with accuracy: 0.6250
+Epoch 4/50 | Train Acc: 0.5521 | Test Acc: 0.6458
+🧠 Saved MixUp model with accuracy: 0.6458
+Epoch 5/50 | Train Acc: 0.5583 | Test Acc: 0.6458
+Epoch 6/50 | Train Acc: 0.4271 | Test Acc: 0.6771
+🧠 Saved MixUp model with accuracy: 0.6771
+Epoch 7/50 | Train Acc: 0.6208 | Test Acc: 0.6771
+Epoch 8/50 | Train Acc: 0.5479 | Test Acc: 0.6979
+🧠 Saved MixUp model with accuracy: 0.6979
+Epoch 9/50 | Train Acc: 0.4750 | Test Acc: 0.7083
+🧠 Saved MixUp model with accuracy: 0.7083
+Epoch 10/50 | Train Acc: 0.5000 | Test Acc: 0.7188
+🧠 Saved MixUp model with accuracy: 0.7188
+Epoch 11/50 | Train Acc: 0.4854 | Test Acc: 0.7396
+🧠 Saved MixUp model with accuracy: 0.7396
+Epoch 12/50 | Train Acc: 0.6125 | Test Acc: 0.7396
+Epoch 13/50 | Train Acc: 0.5125 | Test Acc: 0.7396
+Epoch 14/50 | Train Acc: 0.5708 | Test Acc: 0.7083
+Epoch 15/50 | Train Acc: 0.5875 | Test Acc: 0.7083
+Epoch 16/50 | Train Acc: 0.5062 | Test Acc: 0.7292
+Epoch 17/50 | Train Acc: 0.4854 | Test Acc: 0.7396
+Epoch 18/50 | Train Acc: 0.6375 | Test Acc: 0.7500
+🧠 Saved MixUp model with accuracy: 0.7500
+Epoch 19/50 | Train Acc: 0.5021 | Test Acc: 0.7083
+Epoch 20/50 | Train Acc: 0.6542 | Test Acc: 0.7500
+Epoch 21/50 | Train Acc: 0.5938 | Test Acc: 0.6875
+Epoch 22/50 | Train Acc: 0.4833 | Test Acc: 0.7396
+Epoch 23/50 | Train Acc: 0.6750 | Test Acc: 0.7604
+🧠 Saved MixUp model with accuracy: 0.7604
+Epoch 24/50 | Train Acc: 0.5104 | Test Acc: 0.7292
+Epoch 25/50 | Train Acc: 0.6937 | Test Acc: 0.7292
+Epoch 26/50 | Train Acc: 0.6667 | Test Acc: 0.6667
+Epoch 27/50 | Train Acc: 0.6854 | Test Acc: 0.7083
+Epoch 28/50 | Train Acc: 0.5563 | Test Acc: 0.7500
+Epoch 29/50 | Train Acc: 0.5979 | Test Acc: 0.6771
+Epoch 30/50 | Train Acc: 0.6917 | Test Acc: 0.6979
+Epoch 31/50 | Train Acc: 0.5813 | Test Acc: 0.7083
+Epoch 32/50 | Train Acc: 0.7438 | Test Acc: 0.7188
+Epoch 33/50 | Train Acc: 0.7021 | Test Acc: 0.6771
+Epoch 34/50 | Train Acc: 0.4625 | Test Acc: 0.7188
+Epoch 35/50 | Train Acc: 0.6625 | Test Acc: 0.7292
+Epoch 36/50 | Train Acc: 0.6604 | Test Acc: 0.7083
+Epoch 37/50 | Train Acc: 0.6729 | Test Acc: 0.6875
+Epoch 38/50 | Train Acc: 0.5896 | Test Acc: 0.7396
+Epoch 39/50 | Train Acc: 0.6312 | Test Acc: 0.7188
+Epoch 40/50 | Train Acc: 0.4688 | Test Acc: 0.7292
+Epoch 41/50 | Train Acc: 0.5083 | Test Acc: 0.6875
+Epoch 42/50 | Train Acc: 0.6188 | Test Acc: 0.7188
+Epoch 43/50 | Train Acc: 0.6375 | Test Acc: 0.6562
+Epoch 44/50 | Train Acc: 0.7042 | Test Acc: 0.7708
+🧠 Saved MixUp model with accuracy: 0.7708
+Epoch 45/50 | Train Acc: 0.6000 | Test Acc: 0.6354
+Epoch 46/50 | Train Acc: 0.7063 | Test Acc: 0.7604
+Epoch 47/50 | Train Acc: 0.6687 | Test Acc: 0.6667
+Epoch 48/50 | Train Acc: 0.6562 | Test Acc: 0.7396
+Epoch 49/50 | Train Acc: 0.5917 | Test Acc: 0.7812
+🧠 Saved MixUp model with accuracy: 0.7812
+Epoch 50/50 | Train Acc: 0.6146 | Test Acc: 0.7292
+
+📊 ENSEMBLE Model Evaluation:
+
+📊 Classification Report:
+                                precision    recall  f1-score   support
+
+https://cse.buet.ac.bd/moodle/       0.74      0.77      0.75        30
+            https://google.com       0.73      0.67      0.70        33
+        https://prothomalo.com       0.86      0.91      0.88        33
+
+                      accuracy                           0.78        96
+                     macro avg       0.78      0.78      0.78        96
+                  weighted avg       0.78      0.78      0.78        96
+
+⏱️  Training time: 89.4s
+🎯 Best accuracy: 0.7812
+
+🧠 Training ADVERSARIAL Model
+📋 Adversarial training with domain adaptation
+----------------------------------------
+⚠️  Early stopping disabled - training for full epochs (default)
+Epoch 1/50 | Train Acc: 53.9583 | Test Acc: 44.7917
+🧠 Saved model with accuracy: 44.7917
+Epoch 2/50 | Train Acc: 65.2083 | Test Acc: 65.6250
+🧠 Saved model with accuracy: 65.6250
+Epoch 3/50 | Train Acc: 65.6250 | Test Acc: 64.5833
+Epoch 4/50 | Train Acc: 69.1667 | Test Acc: 67.7083
+🧠 Saved model with accuracy: 67.7083
+Epoch 5/50 | Train Acc: 72.2917 | Test Acc: 72.9167
+🧠 Saved model with accuracy: 72.9167
+Epoch 6/50 | Train Acc: 72.2917 | Test Acc: 70.8333
+Epoch 7/50 | Train Acc: 75.0000 | Test Acc: 67.7083
+Epoch 8/50 | Train Acc: 77.0833 | Test Acc: 67.7083
+Epoch 9/50 | Train Acc: 77.5000 | Test Acc: 57.2917
+Epoch 10/50 | Train Acc: 76.4583 | Test Acc: 58.3333
+Epoch 11/50 | Train Acc: 79.7917 | Test Acc: 56.2500
+Epoch 00011: reducing learning rate of group 0 to 2.5000e-04.
+Epoch 12/50 | Train Acc: 81.6667 | Test Acc: 56.2500
+Epoch 13/50 | Train Acc: 83.1250 | Test Acc: 69.7917
+Epoch 14/50 | Train Acc: 82.7083 | Test Acc: 66.6667
+Epoch 15/50 | Train Acc: 83.9583 | Test Acc: 69.7917
+Epoch 16/50 | Train Acc: 84.3750 | Test Acc: 69.7917
+Epoch 17/50 | Train Acc: 85.4167 | Test Acc: 64.5833
+Epoch 00017: reducing learning rate of group 0 to 1.2500e-04.
+Epoch 18/50 | Train Acc: 85.6250 | Test Acc: 70.8333
+Epoch 19/50 | Train Acc: 85.4167 | Test Acc: 69.7917
+Epoch 20/50 | Train Acc: 86.6667 | Test Acc: 69.7917
+Epoch 21/50 | Train Acc: 87.0833 | Test Acc: 69.7917
+Epoch 22/50 | Train Acc: 85.8333 | Test Acc: 69.7917
+Epoch 23/50 | Train Acc: 87.2917 | Test Acc: 68.7500
+Epoch 00023: reducing learning rate of group 0 to 6.2500e-05.
+Epoch 24/50 | Train Acc: 86.2500 | Test Acc: 71.8750
+Epoch 25/50 | Train Acc: 86.2500 | Test Acc: 71.8750
+Epoch 26/50 | Train Acc: 87.9167 | Test Acc: 71.8750
+Epoch 27/50 | Train Acc: 87.7083 | Test Acc: 72.9167
+Epoch 28/50 | Train Acc: 87.7083 | Test Acc: 72.9167
+Epoch 29/50 | Train Acc: 87.7083 | Test Acc: 72.9167
+Epoch 00029: reducing learning rate of group 0 to 3.1250e-05.
+Epoch 30/50 | Train Acc: 88.5417 | Test Acc: 72.9167
+Epoch 31/50 | Train Acc: 88.5417 | Test Acc: 71.8750
+Epoch 32/50 | Train Acc: 87.9167 | Test Acc: 71.8750
+Epoch 33/50 | Train Acc: 88.5417 | Test Acc: 72.9167
+Epoch 34/50 | Train Acc: 87.9167 | Test Acc: 71.8750
+Epoch 35/50 | Train Acc: 88.5417 | Test Acc: 73.9583
+🧠 Saved model with accuracy: 73.9583
+Epoch 36/50 | Train Acc: 85.6250 | Test Acc: 73.9583
+Epoch 37/50 | Train Acc: 88.5417 | Test Acc: 72.9167
+Epoch 38/50 | Train Acc: 87.7083 | Test Acc: 70.8333
+Epoch 39/50 | Train Acc: 87.2917 | Test Acc: 72.9167
+Epoch 40/50 | Train Acc: 89.1667 | Test Acc: 71.8750
+Epoch 41/50 | Train Acc: 88.5417 | Test Acc: 72.9167
+Epoch 00041: reducing learning rate of group 0 to 1.5625e-05.
+Epoch 42/50 | Train Acc: 86.8750 | Test Acc: 72.9167
+Epoch 43/50 | Train Acc: 86.6667 | Test Acc: 72.9167
+Epoch 44/50 | Train Acc: 89.1667 | Test Acc: 72.9167
+Epoch 45/50 | Train Acc: 89.3750 | Test Acc: 72.9167
+Epoch 46/50 | Train Acc: 87.0833 | Test Acc: 72.9167
+Epoch 47/50 | Train Acc: 87.7083 | Test Acc: 72.9167
+Epoch 00047: reducing learning rate of group 0 to 7.8125e-06.
+Epoch 48/50 | Train Acc: 88.1250 | Test Acc: 72.9167
+Epoch 49/50 | Train Acc: 87.7083 | Test Acc: 72.9167
+Epoch 50/50 | Train Acc: 88.1250 | Test Acc: 72.9167
+📊 Training history saved to analysis/advanced_adversarial_training.png
+
+📊 ADVERSARIAL Model Evaluation:
+
+📊 Classification Report:
+                                precision    recall  f1-score   support
+
+https://cse.buet.ac.bd/moodle/       0.67      0.60      0.63        30
+            https://google.com       0.70      0.70      0.70        33
+        https://prothomalo.com       0.83      0.91      0.87        33
+
+                      accuracy                           0.74        96
+                     macro avg       0.73      0.74      0.73        96
+                  weighted avg       0.73      0.74      0.74        96
+
+⏱️  Training time: 18.3s
+🎯 Best accuracy: 73.9583
+
+🧠 Training ATTENTION Model
+📋 Multi-head attention mechanisms
+----------------------------------------
+⚠️  Early stopping disabled - training for full epochs (default)
+Epoch 1/50 | Train Acc: 45.6250 | Test Acc: 37.5000
+🧠 Saved model with accuracy: 37.5000
+Epoch 2/50 | Train Acc: 63.9583 | Test Acc: 65.6250
+🧠 Saved model with accuracy: 65.6250
+Epoch 3/50 | Train Acc: 67.0833 | Test Acc: 68.7500
+🧠 Saved model with accuracy: 68.7500
+Epoch 4/50 | Train Acc: 69.3750 | Test Acc: 69.7917
+🧠 Saved model with accuracy: 69.7917
+Epoch 5/50 | Train Acc: 70.6250 | Test Acc: 71.8750
+🧠 Saved model with accuracy: 71.8750
+Epoch 6/50 | Train Acc: 71.6667 | Test Acc: 70.8333
+Epoch 7/50 | Train Acc: 75.0000 | Test Acc: 70.8333
+Epoch 8/50 | Train Acc: 76.8750 | Test Acc: 72.9167
+🧠 Saved model with accuracy: 72.9167
+Epoch 9/50 | Train Acc: 77.7083 | Test Acc: 70.8333
+Epoch 10/50 | Train Acc: 78.3333 | Test Acc: 68.7500
+Epoch 11/50 | Train Acc: 80.2083 | Test Acc: 69.7917
+Epoch 12/50 | Train Acc: 80.6250 | Test Acc: 71.8750
+Epoch 13/50 | Train Acc: 81.4583 | Test Acc: 69.7917
+Epoch 14/50 | Train Acc: 83.1250 | Test Acc: 69.7917
+Epoch 00014: reducing learning rate of group 0 to 1.5000e-04.
+Epoch 15/50 | Train Acc: 82.5000 | Test Acc: 70.8333
+Epoch 16/50 | Train Acc: 84.7917 | Test Acc: 70.8333
+Epoch 17/50 | Train Acc: 85.0000 | Test Acc: 67.7083
+Epoch 18/50 | Train Acc: 86.8750 | Test Acc: 68.7500
+Epoch 19/50 | Train Acc: 84.7917 | Test Acc: 67.7083
+Epoch 20/50 | Train Acc: 85.6250 | Test Acc: 68.7500
+Epoch 00020: reducing learning rate of group 0 to 7.5000e-05.
+Epoch 21/50 | Train Acc: 85.8333 | Test Acc: 71.8750
+Epoch 22/50 | Train Acc: 88.7500 | Test Acc: 72.9167
+Epoch 23/50 | Train Acc: 86.0417 | Test Acc: 70.8333
+Epoch 24/50 | Train Acc: 88.3333 | Test Acc: 71.8750
+Epoch 25/50 | Train Acc: 88.7500 | Test Acc: 70.8333
+Epoch 26/50 | Train Acc: 86.6667 | Test Acc: 73.9583
+🧠 Saved model with accuracy: 73.9583
+Epoch 27/50 | Train Acc: 87.5000 | Test Acc: 70.8333
+Epoch 28/50 | Train Acc: 86.8750 | Test Acc: 71.8750
+Epoch 29/50 | Train Acc: 86.0417 | Test Acc: 69.7917
+Epoch 30/50 | Train Acc: 90.0000 | Test Acc: 69.7917
+Epoch 31/50 | Train Acc: 86.8750 | Test Acc: 73.9583
+Epoch 32/50 | Train Acc: 89.3750 | Test Acc: 73.9583
+Epoch 00032: reducing learning rate of group 0 to 3.7500e-05.
+Epoch 33/50 | Train Acc: 88.5417 | Test Acc: 75.0000
+🧠 Saved model with accuracy: 75.0000
+Epoch 34/50 | Train Acc: 90.6250 | Test Acc: 75.0000
+Epoch 35/50 | Train Acc: 89.7917 | Test Acc: 75.0000
+Epoch 36/50 | Train Acc: 90.2083 | Test Acc: 75.0000
+Epoch 37/50 | Train Acc: 90.6250 | Test Acc: 73.9583
+Epoch 38/50 | Train Acc: 87.5000 | Test Acc: 75.0000
+Epoch 39/50 | Train Acc: 92.0833 | Test Acc: 72.9167
+Epoch 00039: reducing learning rate of group 0 to 1.8750e-05.
+Epoch 40/50 | Train Acc: 90.4167 | Test Acc: 75.0000
+Epoch 41/50 | Train Acc: 89.5833 | Test Acc: 73.9583
+Epoch 42/50 | Train Acc: 88.3333 | Test Acc: 75.0000
+Epoch 43/50 | Train Acc: 90.4167 | Test Acc: 75.0000
+Epoch 44/50 | Train Acc: 90.8333 | Test Acc: 75.0000
+Epoch 45/50 | Train Acc: 90.0000 | Test Acc: 73.9583
+Epoch 00045: reducing learning rate of group 0 to 9.3750e-06.
+Epoch 46/50 | Train Acc: 89.3750 | Test Acc: 75.0000
+Epoch 47/50 | Train Acc: 90.8333 | Test Acc: 75.0000
+Epoch 48/50 | Train Acc: 90.4167 | Test Acc: 75.0000
+Epoch 49/50 | Train Acc: 91.4583 | Test Acc: 73.9583
+Epoch 50/50 | Train Acc: 92.5000 | Test Acc: 75.0000
+📊 Training history saved to analysis/advanced_attention_training.png
+
+📊 ATTENTION Model Evaluation:
+
+📊 Classification Report:
+                                precision    recall  f1-score   support
+
+https://cse.buet.ac.bd/moodle/       0.85      0.57      0.68        30
+            https://google.com       0.66      0.76      0.70        33
+        https://prothomalo.com       0.79      0.91      0.85        33
+
+                      accuracy                           0.75        96
+                     macro avg       0.77      0.74      0.74        96
+                  weighted avg       0.76      0.75      0.75        96
+
+⏱️  Training time: 19.3s
+🎯 Best accuracy: 75.0000
+
+🧠 Training RESIDUAL Model
+📋 Deep residual connections
+----------------------------------------
+⚠️  Early stopping disabled - training for full epochs (default)
+Epoch 1/50 | Train Acc: 41.0417 | Test Acc: 41.6667
+🧠 Saved model with accuracy: 41.6667
+Epoch 2/50 | Train Acc: 53.5417 | Test Acc: 53.1250
+🧠 Saved model with accuracy: 53.1250
+Epoch 3/50 | Train Acc: 54.7917 | Test Acc: 52.0833
+Epoch 4/50 | Train Acc: 63.5417 | Test Acc: 55.2083
+🧠 Saved model with accuracy: 55.2083
+Epoch 5/50 | Train Acc: 68.9583 | Test Acc: 63.5417
+🧠 Saved model with accuracy: 63.5417
+Epoch 6/50 | Train Acc: 68.7500 | Test Acc: 65.6250
+🧠 Saved model with accuracy: 65.6250
+Epoch 7/50 | Train Acc: 70.2083 | Test Acc: 70.8333
+🧠 Saved model with accuracy: 70.8333
+Epoch 8/50 | Train Acc: 74.1667 | Test Acc: 70.8333
+Epoch 9/50 | Train Acc: 74.1667 | Test Acc: 72.9167
+🧠 Saved model with accuracy: 72.9167
+Epoch 10/50 | Train Acc: 75.4167 | Test Acc: 69.7917
+Epoch 11/50 | Train Acc: 78.1250 | Test Acc: 69.7917
+Epoch 12/50 | Train Acc: 79.7917 | Test Acc: 68.7500
+Epoch 13/50 | Train Acc: 83.1250 | Test Acc: 68.7500
+Epoch 14/50 | Train Acc: 80.4167 | Test Acc: 67.7083
+Epoch 15/50 | Train Acc: 83.9583 | Test Acc: 71.8750
+Epoch 00015: reducing learning rate of group 0 to 1.0000e-04.
+Epoch 16/50 | Train Acc: 84.3750 | Test Acc: 71.8750
+Epoch 17/50 | Train Acc: 86.2500 | Test Acc: 71.8750
+Epoch 18/50 | Train Acc: 88.9583 | Test Acc: 70.8333
+Epoch 19/50 | Train Acc: 83.9583 | Test Acc: 70.8333
+Epoch 20/50 | Train Acc: 90.8333 | Test Acc: 67.7083
+Epoch 21/50 | Train Acc: 87.2917 | Test Acc: 71.8750
+Epoch 00021: reducing learning rate of group 0 to 5.0000e-05.
+Epoch 22/50 | Train Acc: 90.0000 | Test Acc: 73.9583
+🧠 Saved model with accuracy: 73.9583
+Epoch 23/50 | Train Acc: 91.4583 | Test Acc: 73.9583
+Epoch 24/50 | Train Acc: 90.0000 | Test Acc: 75.0000
+🧠 Saved model with accuracy: 75.0000
+Epoch 25/50 | Train Acc: 92.7083 | Test Acc: 71.8750
+Epoch 26/50 | Train Acc: 89.5833 | Test Acc: 72.9167
+Epoch 27/50 | Train Acc: 91.6667 | Test Acc: 72.9167
+Epoch 28/50 | Train Acc: 93.3333 | Test Acc: 69.7917
+Epoch 29/50 | Train Acc: 89.1667 | Test Acc: 70.8333
+Epoch 30/50 | Train Acc: 92.9167 | Test Acc: 75.0000
+Epoch 00030: reducing learning rate of group 0 to 2.5000e-05.
+Epoch 31/50 | Train Acc: 91.2500 | Test Acc: 72.9167
+Epoch 32/50 | Train Acc: 93.3333 | Test Acc: 71.8750
+Epoch 33/50 | Train Acc: 93.5417 | Test Acc: 72.9167
+Epoch 34/50 | Train Acc: 93.1250 | Test Acc: 72.9167
+Epoch 35/50 | Train Acc: 94.1667 | Test Acc: 71.8750
+Epoch 36/50 | Train Acc: 92.9167 | Test Acc: 70.8333
+Epoch 00036: reducing learning rate of group 0 to 1.2500e-05.
+Epoch 37/50 | Train Acc: 94.5833 | Test Acc: 73.9583
+Epoch 38/50 | Train Acc: 92.9167 | Test Acc: 75.0000
+Epoch 39/50 | Train Acc: 93.7500 | Test Acc: 70.8333
+Epoch 40/50 | Train Acc: 92.2917 | Test Acc: 73.9583
+Epoch 41/50 | Train Acc: 92.7083 | Test Acc: 72.9167
+Epoch 42/50 | Train Acc: 94.5833 | Test Acc: 71.8750
+Epoch 00042: reducing learning rate of group 0 to 6.2500e-06.
+Epoch 43/50 | Train Acc: 92.2917 | Test Acc: 70.8333
+Epoch 44/50 | Train Acc: 93.9583 | Test Acc: 71.8750
+Epoch 45/50 | Train Acc: 94.3750 | Test Acc: 70.8333
+Epoch 46/50 | Train Acc: 93.7500 | Test Acc: 70.8333
+Epoch 47/50 | Train Acc: 94.7917 | Test Acc: 72.9167
+Epoch 48/50 | Train Acc: 94.5833 | Test Acc: 71.8750
+Epoch 00048: reducing learning rate of group 0 to 3.1250e-06.
+Epoch 49/50 | Train Acc: 94.7917 | Test Acc: 72.9167
+Epoch 50/50 | Train Acc: 93.5417 | Test Acc: 71.8750
+📊 Training history saved to analysis/advanced_residual_training.png
+
+📊 RESIDUAL Model Evaluation:
+
+📊 Classification Report:
+                                precision    recall  f1-score   support
+
+https://cse.buet.ac.bd/moodle/       0.76      0.63      0.69        30
+            https://google.com       0.69      0.73      0.71        33
+        https://prothomalo.com       0.81      0.88      0.84        33
+
+                      accuracy                           0.75        96
+                     macro avg       0.75      0.75      0.75        96
+                  weighted avg       0.75      0.75      0.75        96
+
+⏱️  Training time: 23.1s
+🎯 Best accuracy: 75.0000
+
+🎉 Advanced Training Complete!
+==================================================
+📊 Model Performance Summary:
+   🧠 baseline    : 76.0417 (28.2s)
+   🧠 complex     : 75.0000 (76.7s)
+   🧠 ensemble    : 0.7812 (89.4s)
+   🧠 adversarial : 73.9583 (18.3s)
+   🧠 attention   : 75.0000 (19.3s)
+   🧠 residual    : 75.0000 (23.1s)
+
+💾 Models saved in: saved_models_advanced
+📈 Analysis plots in: analysis/
+
+🚀 Training successful! Best model accuracies:
+🏆 Champion: baseline (76.0417)
