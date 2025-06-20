@@ -1,0 +1,175 @@
+📂 Loading dataset from: Datasets/dataset.json
+✅ Loaded 6000 traces from 3 websites
+
+🎯 Training selected models: baseline, complex
+⏱️  Training epochs: 50
+
+📶 Training baseline FingerprintClassifier...
+Epoch 1/50 | Train Acc: 0.7081 | Test Acc: 0.7622
+🧠 Saved model with accuracy: 0.7622
+Epoch 2/50 | Train Acc: 0.7942 | Test Acc: 0.7830
+🧠 Saved model with accuracy: 0.7830
+Epoch 3/50 | Train Acc: 0.8229 | Test Acc: 0.7969
+🧠 Saved model with accuracy: 0.7969
+Epoch 4/50 | Train Acc: 0.8456 | Test Acc: 0.8082
+🧠 Saved model with accuracy: 0.8082
+Epoch 5/50 | Train Acc: 0.8723 | Test Acc: 0.8038
+Epoch 6/50 | Train Acc: 0.8919 | Test Acc: 0.8099
+🧠 Saved model with accuracy: 0.8099
+Epoch 7/50 | Train Acc: 0.9119 | Test Acc: 0.8151
+🧠 Saved model with accuracy: 0.8151
+Epoch 8/50 | Train Acc: 0.9302 | Test Acc: 0.8090
+Epoch 9/50 | Train Acc: 0.9437 | Test Acc: 0.8108
+Epoch 10/50 | Train Acc: 0.9498 | Test Acc: 0.8168
+🧠 Saved model with accuracy: 0.8168
+Epoch 11/50 | Train Acc: 0.9571 | Test Acc: 0.8073
+Epoch 12/50 | Train Acc: 0.9652 | Test Acc: 0.8082
+Epoch 13/50 | Train Acc: 0.9665 | Test Acc: 0.8064
+Epoch 14/50 | Train Acc: 0.9698 | Test Acc: 0.8064
+Epoch 15/50 | Train Acc: 0.9702 | Test Acc: 0.7969
+Epoch 16/50 | Train Acc: 0.9731 | Test Acc: 0.8047
+Epoch 17/50 | Train Acc: 0.9775 | Test Acc: 0.8142
+Epoch 18/50 | Train Acc: 0.9798 | Test Acc: 0.8108
+Epoch 19/50 | Train Acc: 0.9806 | Test Acc: 0.8073
+Epoch 20/50 | Train Acc: 0.9831 | Test Acc: 0.8134
+Epoch 21/50 | Train Acc: 0.9848 | Test Acc: 0.8082
+Epoch 22/50 | Train Acc: 0.9854 | Test Acc: 0.8108
+Epoch 23/50 | Train Acc: 0.9860 | Test Acc: 0.8090
+Epoch 24/50 | Train Acc: 0.9854 | Test Acc: 0.8151
+Epoch 25/50 | Train Acc: 0.9875 | Test Acc: 0.8064
+Epoch 26/50 | Train Acc: 0.9854 | Test Acc: 0.8116
+Epoch 27/50 | Train Acc: 0.9877 | Test Acc: 0.8003
+Epoch 28/50 | Train Acc: 0.9848 | Test Acc: 0.8160
+Epoch 29/50 | Train Acc: 0.9848 | Test Acc: 0.8073
+Epoch 30/50 | Train Acc: 0.9885 | Test Acc: 0.8090
+Epoch 31/50 | Train Acc: 0.9869 | Test Acc: 0.8047
+Epoch 32/50 | Train Acc: 0.9875 | Test Acc: 0.8247
+🧠 Saved model with accuracy: 0.8247
+Epoch 33/50 | Train Acc: 0.9860 | Test Acc: 0.8238
+Epoch 34/50 | Train Acc: 0.9898 | Test Acc: 0.8116
+Epoch 35/50 | Train Acc: 0.9894 | Test Acc: 0.8108
+Epoch 36/50 | Train Acc: 0.9906 | Test Acc: 0.8194
+Epoch 37/50 | Train Acc: 0.9881 | Test Acc: 0.8125
+Epoch 38/50 | Train Acc: 0.9912 | Test Acc: 0.8030
+Epoch 39/50 | Train Acc: 0.9877 | Test Acc: 0.8021
+Epoch 40/50 | Train Acc: 0.9938 | Test Acc: 0.8264
+🧠 Saved model with accuracy: 0.8264
+Epoch 41/50 | Train Acc: 0.9892 | Test Acc: 0.8012
+Epoch 42/50 | Train Acc: 0.9902 | Test Acc: 0.8238
+Epoch 43/50 | Train Acc: 0.9923 | Test Acc: 0.8021
+Epoch 44/50 | Train Acc: 0.9917 | Test Acc: 0.8108
+Epoch 45/50 | Train Acc: 0.9896 | Test Acc: 0.8116
+Epoch 46/50 | Train Acc: 0.9877 | Test Acc: 0.8186
+Epoch 47/50 | Train Acc: 0.9846 | Test Acc: 0.8168
+Epoch 48/50 | Train Acc: 0.9869 | Test Acc: 0.8038
+Epoch 49/50 | Train Acc: 0.9904 | Test Acc: 0.8108
+Epoch 50/50 | Train Acc: 0.9938 | Test Acc: 0.8064
+📊 Baseline model evaluation:
+
+📊 Classification Report:
+                                precision    recall  f1-score   support
+
+https://cse.buet.ac.bd/moodle/       0.80      0.74      0.77       380
+            https://google.com       0.78      0.76      0.77       386
+        https://prothomalo.com       0.89      0.97      0.93       386
+
+                      accuracy                           0.83      1152
+                     macro avg       0.82      0.83      0.82      1152
+                  weighted avg       0.82      0.83      0.82      1152
+
+
+🧠 Training ComplexFingerprintClassifier...
+Epoch 1/50 | Train Acc: 0.7662 | Test Acc: 0.8108
+🧠 Saved model with accuracy: 0.8108
+Epoch 2/50 | Train Acc: 0.8517 | Test Acc: 0.8108
+Epoch 3/50 | Train Acc: 0.8848 | Test Acc: 0.8160
+🧠 Saved model with accuracy: 0.8160
+Epoch 4/50 | Train Acc: 0.9183 | Test Acc: 0.8247
+🧠 Saved model with accuracy: 0.8247
+Epoch 5/50 | Train Acc: 0.9352 | Test Acc: 0.8255
+🧠 Saved model with accuracy: 0.8255
+Epoch 6/50 | Train Acc: 0.9502 | Test Acc: 0.8073
+Epoch 7/50 | Train Acc: 0.9629 | Test Acc: 0.8056
+Epoch 8/50 | Train Acc: 0.9644 | Test Acc: 0.8238
+Epoch 9/50 | Train Acc: 0.9727 | Test Acc: 0.8073
+Epoch 10/50 | Train Acc: 0.9733 | Test Acc: 0.8056
+Epoch 11/50 | Train Acc: 0.9777 | Test Acc: 0.8238
+Epoch 12/50 | Train Acc: 0.9767 | Test Acc: 0.8134
+Epoch 13/50 | Train Acc: 0.9754 | Test Acc: 0.8264
+🧠 Saved model with accuracy: 0.8264
+Epoch 14/50 | Train Acc: 0.9831 | Test Acc: 0.8212
+Epoch 15/50 | Train Acc: 0.9865 | Test Acc: 0.8264
+Epoch 16/50 | Train Acc: 0.9821 | Test Acc: 0.8203
+Epoch 17/50 | Train Acc: 0.9825 | Test Acc: 0.8108
+Epoch 18/50 | Train Acc: 0.9829 | Test Acc: 0.8151
+Epoch 19/50 | Train Acc: 0.9785 | Test Acc: 0.8090
+Epoch 20/50 | Train Acc: 0.9829 | Test Acc: 0.8273
+🧠 Saved model with accuracy: 0.8273
+Epoch 21/50 | Train Acc: 0.9892 | Test Acc: 0.8299
+🧠 Saved model with accuracy: 0.8299
+Epoch 22/50 | Train Acc: 0.9869 | Test Acc: 0.8385
+🧠 Saved model with accuracy: 0.8385
+Epoch 23/50 | Train Acc: 0.9846 | Test Acc: 0.8290
+Epoch 24/50 | Train Acc: 0.9848 | Test Acc: 0.8394
+🧠 Saved model with accuracy: 0.8394
+Epoch 25/50 | Train Acc: 0.9890 | Test Acc: 0.8247
+Epoch 26/50 | Train Acc: 0.9848 | Test Acc: 0.8194
+Epoch 27/50 | Train Acc: 0.9844 | Test Acc: 0.8446
+🧠 Saved model with accuracy: 0.8446
+Epoch 28/50 | Train Acc: 0.9883 | Test Acc: 0.8333
+Epoch 29/50 | Train Acc: 0.9900 | Test Acc: 0.8307
+Epoch 30/50 | Train Acc: 0.9925 | Test Acc: 0.8264
+Epoch 31/50 | Train Acc: 0.9898 | Test Acc: 0.8351
+Epoch 32/50 | Train Acc: 0.9908 | Test Acc: 0.8429
+Epoch 33/50 | Train Acc: 0.9902 | Test Acc: 0.8377
+Epoch 34/50 | Train Acc: 0.9912 | Test Acc: 0.8411
+Epoch 35/50 | Train Acc: 0.9871 | Test Acc: 0.8264
+Epoch 36/50 | Train Acc: 0.9879 | Test Acc: 0.8342
+Epoch 37/50 | Train Acc: 0.9883 | Test Acc: 0.8325
+Epoch 38/50 | Train Acc: 0.9900 | Test Acc: 0.8359
+Epoch 39/50 | Train Acc: 0.9921 | Test Acc: 0.7726
+Epoch 40/50 | Train Acc: 0.9894 | Test Acc: 0.8403
+Epoch 41/50 | Train Acc: 0.9904 | Test Acc: 0.8160
+Epoch 42/50 | Train Acc: 0.9898 | Test Acc: 0.8307
+Epoch 43/50 | Train Acc: 0.9925 | Test Acc: 0.8247
+Epoch 44/50 | Train Acc: 0.9935 | Test Acc: 0.8273
+Epoch 45/50 | Train Acc: 0.9892 | Test Acc: 0.8377
+Epoch 46/50 | Train Acc: 0.9933 | Test Acc: 0.8490
+🧠 Saved model with accuracy: 0.8490
+Epoch 47/50 | Train Acc: 0.9942 | Test Acc: 0.8481
+Epoch 48/50 | Train Acc: 0.9927 | Test Acc: 0.8403
+Epoch 49/50 | Train Acc: 0.9896 | Test Acc: 0.8142
+Epoch 50/50 | Train Acc: 0.9906 | Test Acc: 0.8238
+📊 Complex model evaluation:
+
+📊 Classification Report:
+                                precision    recall  f1-score   support
+
+https://cse.buet.ac.bd/moodle/       0.84      0.75      0.79       380
+            https://google.com       0.78      0.83      0.81       386
+        https://prothomalo.com       0.92      0.96      0.94       386
+
+                      accuracy                           0.85      1152
+                     macro avg       0.85      0.85      0.85      1152
+                  weighted avg       0.85      0.85      0.85      1152
+
+
+📊 Training Summary:
+============================================================
+Trained models: baseline, complex
+Training epochs: 50
+Models saved in: saved_models
+
+Final accuracies:
+  baseline: 0.8264
+  complex: 0.8490
+
+🎯 Key improvements implemented:
+  • Multi-head attention mechanisms
+  • Deep residual connections
+  • Ensemble learning
+  • Adversarial training
+  • Advanced data augmentation (MixUp, noise)
+  • Learning rate scheduling
+  • Early stopping
+  • Gradient clipping
