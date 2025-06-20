@@ -13,3 +13,5 @@ __pycache__/
 # Ignore Jupyter Notebook checkpoints
 
 static/heatmaps/
+
+*.zip
