@@ -56,10 +56,9 @@ def page_sorts_by_hostname(response_text: str) -> bool:
 
 # NOTE: remove the stray "?column=ip" — requests will append our params for us.
 BASE_URL = "http://localhost:8080/WebGoat/SqlInjectionMitigations/servers"
-
-COOKIE   = {"JSESSIONID": "EFFB385BBF7C53A06493297C10CA02D8"}
+from cookie import COOKIE  # noqa: E402
 CHARSET  = "0123456789."   # digits + dot
-MAX_POS  = 3               # first three octets
+MAX_POS  = 3            # first three octets
 
 
 
