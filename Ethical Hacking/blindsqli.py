@@ -2,7 +2,7 @@ import requests
 import urllib.parse
 
 URL = "http://127.0.0.1:8080/WebGoat/SqlInjectionAdvanced/register"
-COOKIE = {'JSESSIONID': '722F38F10D48E2934BB07A82AAC697BE'}
+COOKIE = {'JSESSIONID': 'EFFB385BBF7C53A06493297C10CA02D8'}
 
 HEADERS = {
     "Content-Type": "application/x-www-form-urlencoded"
