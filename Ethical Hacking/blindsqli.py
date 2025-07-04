@@ -10,7 +10,7 @@ HEADERS = {
 
 # The set of characters to test (adjust as needed)
 charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-@#&"
-max_length = 25  # adjust based on expected password length
+max_length = 50  # adjust based on expected password length
 
 def test_char(pos, ch):
     # Craft the injection payload
