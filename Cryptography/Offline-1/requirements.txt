@@ -1,0 +1,10 @@
+# Cryptography and Security Project Dependencies
+
+# BitVector library for AES implementation
+BitVector>=3.5.0
+
+# SymPy for mathematical operations (prime generation, modular arithmetic)
+sympy>=1.12
+
+# PyCryptodome for cryptographic utilities (random number generation)
+pycryptodome>=3.19.0
