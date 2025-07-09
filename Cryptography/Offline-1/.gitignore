@@ -7,3 +7,5 @@
 *.dll
 *.so
 *pycache*
+venv/
+__pycache__
