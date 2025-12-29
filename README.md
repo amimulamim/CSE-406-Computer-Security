@@ -185,7 +185,7 @@ This section contains a comprehensive implementation of website fingerprinting t
 - **Technique**: Browser cache timing side-channel attacks
 - **Goal**: Identify visited websites from timing patterns
 - **Method**: Machine learning classification of timing traces
-- **Live Demo**: [http://20.40.60.232:5000](http://20.40.60.232:5000) (Azure deployment)
+- **Live Demo**: [http://20.40.60.232:5000](http://20.40.60.232:5000) (Educational deployment on Azure - for demonstration purposes only)
 
 #### Key Components:
 
@@ -279,7 +279,11 @@ python app.py
    **For Buffer Overflow**:
    ```bash
    cd "Buffer Overflow Attack/Batch-20_Onlines+Solutions/A1"
-   # Compile with appropriate flags
+   # Compile with security features disabled FOR EDUCATIONAL PURPOSES ONLY
+   # WARNING: These flags disable critical security protections:
+   #   -fno-stack-protector: Disables stack canaries
+   #   -z execstack: Makes stack executable
+   # NEVER use these flags in production code!
    gcc -fno-stack-protector -z execstack -o vuln A1.c
    ```
 
@@ -506,7 +510,7 @@ This project is part of academic coursework for CSE-406 Computer Security. The c
 - **Issues**: Use GitHub Issues for bug reports and questions
 
 ### Live Demos
-- **Side Channel Attack**: [http://20.40.60.232:5000](http://20.40.60.232:5000)
+- **Side Channel Attack**: [http://20.40.60.232:5000](http://20.40.60.232:5000) (Educational demo - not for production use)
 
 ### Additional Resources
 - **Dataset**: [Kaggle - Side Channel Attack Traces](https://www.kaggle.com/datasets/amimulehsan1/side-channel-attack-2005017)
