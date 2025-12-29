@@ -86,6 +86,7 @@ Implementation of modern cryptographic algorithms and secure communication proto
 
 #### Dependencies:
 ```
+# See Cryptography/Offline-1/requirements.txt for exact versions
 BitVector>=3.5.0        # For AES operations
 sympy>=1.12             # For prime generation
 pycryptodome>=3.19.0    # For cryptographic utilities
@@ -185,7 +186,9 @@ This section contains a comprehensive implementation of website fingerprinting t
 - **Technique**: Browser cache timing side-channel attacks
 - **Goal**: Identify visited websites from timing patterns
 - **Method**: Machine learning classification of timing traces
-- **Live Demo**: [http://20.40.60.232:5000](http://20.40.60.232:5000) (Educational deployment on Azure - for demonstration purposes only)
+- **Live Demo**: [http://20.40.60.232:5000](http://20.40.60.232:5000) 
+  - Educational deployment on Azure (demonstration purposes only)
+  - Note: HTTP used for compatibility with browser timing APIs; not for production use
 
 #### Key Components:
 
@@ -238,7 +241,9 @@ python app.py
 
 ### Prerequisites
 
-- **Python**: 3.12+ (see `runtime.txt`)
+- **Python**: 3.10+ (see `runtime.txt` in each directory for specific versions)
+  - Main repository: Python 3.12.7
+  - Side Channel Attack: Python 3.10.10
 - **C/C++ Compiler**: GCC for buffer overflow exercises
 - **Docker**: For WebGoat and side-channel attack deployment
 - **Chrome/Chromium**: For side-channel attack data collection
